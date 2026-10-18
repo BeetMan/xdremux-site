@@ -89,7 +89,7 @@ Cloudflare Worker `xdremux-app`（自定义域名 xdremux.app / www.xdremux.app�
   **不要再设置 Custom domain**（会和 Cloudflare 代理冲突，`github.io` 必须保持可直接访问作为源站）。
 - **对外域名：Cloudflare Worker `xdremux-app`**（代码在 [`cloudflare/edge-proxy/`](cloudflare/edge-proxy/)）。
   Worker 的两个自定义域名由 Cloudflare **自动创建 DNS 记录并签发边缘证书**，然后以「缓存反代」方式把
-  GitHub Pages 的内容挂在域名下：HTML 边缘缓存 5 分钟、静态资源 1 天；`www` 与 `http` 都 301 到 `https://xdremux.app/`。
+  GitHub Pages 的内容挂在域名下：HTML 让浏览器每次校验（no-cache）、边缘缓存 5 分钟，静态资源 1 小时/1 天；`www` 与 `http` 都 301 到 `https://xdremux.app/`。
 - **为什么不直接用 GitHub Pages 自定义域名**：GitHub Pages 给这个域名签发证书卡在已知 bug
   （`https_certificate.state = new`，`request will begin shortly` 长期不变；社区确认只能由 GitHub Support 重排队列；
   反复删除/重加自定义域名还会把请求排到队尾）。Cloudflare Worker 自定义域名能自动完成 DNS + 证书，所以采用这个方案。

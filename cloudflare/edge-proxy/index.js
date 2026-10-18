@@ -31,7 +31,7 @@ export default {
     const headers = new Headers(upstream.headers)
     for (const h of ['content-encoding', 'transfer-encoding', 'connection', 'set-cookie']) headers.delete(h)
     const isAsset = /\.[a-z0-9]{2,5}$/i.test(url.pathname)
-    headers.set('cache-control', isAsset ? 'public, max-age=3600, s-maxage=86400' : 'public, max-age=60, s-maxage=300')
+    headers.set('cache-control', isAsset ? 'public, max-age=3600, s-maxage=86400' : 'no-cache, s-maxage=300')
     const res = new Response(upstream.body, { status: upstream.status, statusText: upstream.statusText, headers })
     if (res.status === 200) ctx.waitUntil(cache.put(key, res.clone()))
     return res
