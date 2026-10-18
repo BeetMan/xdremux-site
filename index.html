@@ -1,0 +1,1723 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>XDRemux</title>
+<meta name="description" content="XDRemux 将 OPPO、一加、realme 拍摄的 ProXDR 照片转换为标准 HDR HEIC，支持 Apple 摄影风格、人像与 Live Photo，覆盖 Windows、macOS、Android、iOS 和 HarmonyOS。">
+<link rel="icon" href="assets/icon.png">
+<link rel="canonical" href="https://beetman.github.io/XDRemux-Flutter/">
+<link rel="apple-touch-icon" href="assets/icon.png">
+<meta name="theme-color" content="#000000">
+<meta property="og:type" content="website">
+<meta property="og:title" content="XDRemux">
+<meta property="og:description" content="XDRemux 将 OPPO、一加、realme 拍摄的 ProXDR 照片转换为标准 HDR HEIC，支持 Apple 摄影风格、人像与 Live Photo，覆盖 Windows、macOS、Android、iOS 和 HarmonyOS。">
+<meta property="og:url" content="https://beetman.github.io/XDRemux-Flutter/">
+<meta property="og:image" content="https://beetman.github.io/XDRemux-Flutter/assets/icon.png">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: 产品发布页。黑色章节讲故事（Hero、速览亮点、HDR 吸顶叙事、功能、数字），浅灰 / 白色章节讲实用信息（输出模式对比、往返工作流、界面、版本对比、脚注与页脚）。断点 734 / 1068。 */
+:root{
+  --bg:#000; --bg-2:#161617; --tile:#1d1d1f; --tile-2:#2c2c2e; --line:#424245;
+  --fg:#f5f5f7; --fg-2:#86868b; --fg-3:#6e6e73; --dim:#3a3a3c;
+  --link:#2997ff; --btn:#0071e3; --btn-hover:#0077ed;
+  --teal:#3fd0b8; --blue:#8ca6ff;
+  --warm-1:#ffe0b0; --warm-2:#ff9a5c; --warm-3:#d4577c;
+  --yellow:#ffd60a; --green:#30d158;
+  --nav-bg:rgba(22,22,23,.8); --nav-fg:#f5f5f7; --nav-line:rgba(255,255,255,.08);
+  --photo:#05070b;
+
+  --f-sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro SC","PingFang SC","Inter","Noto Sans SC","Helvetica Neue","Microsoft YaHei",sans-serif;
+  --f-mono:"SF Mono",ui-monospace,Menlo,Consolas,monospace;
+
+  --gutter-l:max(16px,env(safe-area-inset-left,0px));
+  --gutter-r:max(16px,env(safe-area-inset-right,0px));
+  --edge:max(var(--gutter-l),calc((100vw - 1200px) / 2));
+  --ease:cubic-bezier(.28,.11,.32,1);
+  color-scheme:dark;
+}
+.light{
+  --bg:#f5f5f7; --bg-2:#fff; --tile:#fff; --tile-2:#e8e8ed; --line:#d2d2d7;
+  --fg:#1d1d1f; --fg-2:#6e6e73; --fg-3:#86868b; --dim:#d2d2d7;
+  --link:#0066cc; --teal:#0a8a76; --blue:#2856d7;
+  background:var(--bg); color:var(--fg); color-scheme:light;
+}
+.light.white{--bg:#fff; --bg-2:#f5f5f7; --tile:#f5f5f7}
+
+html{scroll-behavior:smooth;scroll-padding-top:52px}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-sans);font-size:1.0625rem;line-height:1.47;letter-spacing:-.01em;-webkit-font-smoothing:antialiased;overflow-x:clip}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--nav-bg)}
+a{color:inherit}
+img{max-width:100%}
+[hidden]{display:none!important}
+h1,h2,h3,h4{margin:0;font-weight:600;text-wrap:balance}
+p{margin:0}
+sup{line-height:0}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--link);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1200px;margin-inline:auto;padding-left:var(--gutter-l);padding-right:var(--gutter-r)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.br-s{display:none}
+@media (max-width:734px){.br-s{display:inline}.br-l{display:none}}
+.fn-ref{margin-left:2px;color:inherit;font-size:.6em;font-weight:400;text-decoration:none;opacity:.8}
+.fn-ref:hover{color:var(--link);opacity:1}
+.tt{color:var(--fg-2);font-weight:600}
+.tt strong{color:var(--fg);font-weight:600}
+
+/* ---------- ribbon + nav ---------- */
+.ribbon{padding-block:14px;background:var(--bg-2);color:var(--fg-2);font-size:.875rem;text-align:center}
+.ribbon a{color:var(--link);text-decoration:none;white-space:nowrap}
+.ribbon a:hover{text-decoration:underline}
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--nav-bg);-webkit-backdrop-filter:saturate(1.8) blur(20px);backdrop-filter:saturate(1.8) blur(20px);border-bottom:1px solid var(--nav-line);color:var(--nav-fg);transition:background-color .4s,color .4s,border-color .4s}
+.nav.on-light{--nav-bg:rgba(251,251,253,.8);--nav-fg:#1d1d1f;--nav-line:rgba(0,0,0,.12)}
+.nav .wrap{display:flex;align-items:center;gap:24px;height:52px}
+.nav-title{display:flex;align-items:center;gap:8px;font-size:1.3125rem;font-weight:600;letter-spacing:.01em;text-decoration:none}
+.nav-title img{width:22px;height:22px;border-radius:5px}
+.nav-links{display:flex;gap:24px;margin:0 0 0 auto;padding:0;list-style:none;font-size:.75rem}
+.nav-links a{opacity:.82;text-decoration:none;transition:opacity .2s}
+.nav-links a:hover{opacity:1}
+@media (max-width:860px){.nav-links{display:none}.nav .btn{margin-left:auto}}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 22px;border:1px solid transparent;border-radius:980px;background:var(--btn);color:#fff;font-size:1.0625rem;font-weight:400;line-height:1.18;letter-spacing:-.01em;text-decoration:none;cursor:pointer;transition:background-color .2s}
+.btn:hover{background:var(--btn-hover)}
+.btn-sm{padding:4px 12px;font-size:.75rem;line-height:1.33}
+.btn-md{padding:8px 16px;font-size:.875rem}
+.more{color:var(--link);text-decoration:none}
+.more:hover{text-decoration:underline;text-underline-offset:3px}
+
+/* ---------- hero ---------- */
+.hero{padding-top:clamp(44px,7vw,92px);text-align:center}
+.hero-name{padding-bottom:.08em;background:linear-gradient(100deg,var(--warm-1) 8%,var(--warm-2) 55%,var(--warm-3) 96%);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:clamp(3.5rem,11vw,7.5rem);line-height:1.02;letter-spacing:-.03em}
+.hero-tag{margin-top:clamp(10px,1.4vw,18px);font-size:clamp(1.375rem,3.2vw,2.5rem);font-weight:600;line-height:1.2;letter-spacing:-.01em}
+.hero-media{position:relative;max-width:1200px;aspect-ratio:16/9;margin:clamp(36px,5vw,60px) auto 0;border-radius:28px;background:var(--photo);overflow:hidden}
+.hero-media canvas{position:absolute;inset:0;display:block;width:100%;height:100%}
+.hdr-badge{position:absolute;left:20px;top:18px;padding:2px 8px;border:1.5px solid rgba(255,255,255,.85);border-radius:6px;color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.1em}
+.media-note{position:absolute;left:20px;bottom:20px;color:rgba(245,245,247,.62);font-size:.75rem}
+.media-ctrl{position:absolute;right:16px;bottom:16px;display:grid;place-items:center;width:40px;height:40px;border:0;border-radius:50%;background:rgba(66,66,69,.72);color:#f5f5f7;cursor:pointer;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);transition:background-color .2s}
+.media-ctrl:hover{background:rgba(96,96,100,.8)}
+.media-ctrl svg{width:15px;height:15px}
+.media-ctrl .i-play,.media-ctrl .i-replay{display:none}
+.media-ctrl.paused .i-pause,.media-ctrl.ended .i-pause{display:none}
+.media-ctrl.paused .i-play{display:block}
+.media-ctrl.ended .i-replay{display:block}
+.hero-buy{display:flex;flex-direction:column;align-items:center;gap:16px;padding-block:clamp(32px,4vw,44px) clamp(80px,10vw,132px)}
+.price{color:var(--fg-2);font-size:1.0625rem;line-height:1.5}
+@media (max-width:734px){.hero-media{aspect-ratio:4/5;border-radius:20px}}
+@media (prefers-reduced-motion: no-preference){
+  .rise{animation:rise 1.4s var(--ease) both;animation-delay:var(--d,0s)}
+  #heroBase{animation:heroIn 2.8s var(--ease) .25s both}
+}
+@keyframes rise{from{opacity:.15;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes heroIn{from{transform:scale(1.08);filter:brightness(.42) saturate(.7)}to{transform:none;filter:none}}
+
+/* ---------- shared section type ---------- */
+.section{padding-block:clamp(100px,12vw,160px)}
+.sec-head{max-width:980px;margin-bottom:clamp(44px,6vw,80px)}
+.sec-head.center{margin-inline:auto;text-align:center}
+.eyebrow{margin-bottom:12px;color:var(--fg-2);font-size:clamp(1.125rem,1.8vw,1.5rem);font-weight:600;line-height:1.2}
+.sec-title{font-size:clamp(2.25rem,5.6vw,5rem);line-height:1.08;letter-spacing:-.02em}
+.lead{max-width:36em;margin-top:22px;color:var(--fg-2);font-size:clamp(1.125rem,1.7vw,1.3125rem);font-weight:500;line-height:1.42;text-wrap:pretty}
+.sec-head.center .lead{margin-inline:auto;text-wrap:balance}
+[data-reveal]{transition:opacity 1.2s var(--ease),transform 1.2s var(--ease);transition-delay:var(--d,0s)}
+[data-reveal].pre:not(.in){opacity:0;transform:translateY(56px)}
+
+/* ---------- highlights carousel ---------- */
+.hl{padding-top:clamp(40px,6vw,80px)}
+.hl-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:12px 24px;margin-bottom:clamp(28px,4vw,44px)}
+.hl-head .sec-title{font-size:clamp(2rem,4.4vw,3.5rem)}
+.hl-scroller{position:relative;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding-inline:var(--edge);overscroll-behavior-x:contain;scrollbar-width:none}
+.hl-scroller::-webkit-scrollbar{display:none}
+.hl-track{display:flex;gap:20px;width:max-content;margin:0;padding:0 var(--edge);list-style:none}
+.hl-card{position:relative;flex:none;width:min(87vw,1000px);aspect-ratio:16/9;border-radius:28px;background:var(--tile);overflow:hidden;scroll-snap-align:start}
+.hl-vis{position:absolute;inset:0}
+.hl-vis img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:64% 50%}
+.scrim{position:absolute;inset:0 0 auto;z-index:1;height:62%;background:linear-gradient(rgba(0,0,0,.62),rgba(0,0,0,0));pointer-events:none}
+.hl-cap{position:absolute;left:0;top:0;z-index:2;max-width:26em;padding:clamp(24px,3.4vw,40px);font-size:clamp(1.1875rem,2.1vw,1.75rem);line-height:1.2}
+.hl-card .tt{color:rgba(245,245,247,.62)}
+.hl-card .tt strong{color:#fff}
+.hl-controls{position:sticky;bottom:24px;z-index:5;display:flex;align-items:center;justify-content:center;gap:14px;margin-top:28px;padding-bottom:4px}
+.hl-dots{display:flex;align-items:center;gap:14px;height:56px;padding:0 22px;border-radius:999px;background:rgba(42,42,45,.72);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+.dot{position:relative;width:8px;height:8px;padding:0;border:0;border-radius:999px;background:rgba(255,255,255,.42);cursor:pointer;transition:width .5s var(--ease),background-color .3s}
+.dot::before{content:"";position:absolute;inset:-12px -6px}
+.dot.on{width:48px;background:rgba(255,255,255,.28)}
+.dot .fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:inherit;background:#f5f5f7}
+.dot:not(.on) .fill{display:none}
+.hl-controls .media-ctrl{position:static;width:56px;height:56px;background:rgba(42,42,45,.72)}
+.hl-controls .media-ctrl svg{width:18px;height:18px}
+@media (max-width:734px){.hl-card{aspect-ratio:3/4.2;border-radius:22px}}
+
+.v-split .top{clip-path:inset(0 0 0 50%)}
+.v-split .line{position:absolute;top:0;bottom:0;left:50%;width:2px;margin-left:-1px;background:#fff;box-shadow:0 0 22px 6px rgba(255,214,150,.5)}
+.hl-card.active .v-split .top{animation:splitIn 1.9s var(--ease) .2s both}
+.hl-card.active .v-split .line{animation:lineIn 1.9s var(--ease) .2s both}
+@keyframes splitIn{from{clip-path:inset(0 0 0 100%)}to{clip-path:inset(0 0 0 50%)}}
+@keyframes lineIn{from{left:100%}to{left:50%}}
+.v-lbl{position:absolute;bottom:20px;z-index:2;padding:5px 11px;border-radius:999px;background:rgba(0,0,0,.45);color:#f5f5f7;font-size:.75rem;font-weight:500;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.v-lbl.l{left:20px}.v-lbl.r{right:20px}
+
+.v-styles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-content:end;gap:12px;padding:0 clamp(20px,3vw,40px) clamp(20px,3vw,40px);background:radial-gradient(90% 70% at 50% 0%,#2c2c33,var(--tile))}
+.v-styles figure{position:relative;aspect-ratio:3/4;margin:0;border-radius:16px;overflow:hidden}
+.v-styles img{position:static;display:block}
+.v-styles figcaption{position:absolute;left:12px;bottom:10px;color:#fff;font-size:.8rem;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.hl-card.active .v-styles figure{animation:pop 1.1s var(--ease) both;animation-delay:calc(var(--i) * .12s + .15s)}
+@keyframes pop{from{opacity:0;transform:translateY(36px) scale(.96)}to{opacity:1;transform:none}}
+@media (max-width:734px){.v-styles{grid-template-columns:repeat(2,minmax(0,1fr))}.v-styles figure{aspect-ratio:1}}
+
+.v-portrait img{filter:blur(2px);transform:scale(1.08);transition:filter 2.2s var(--ease) .3s}
+.hl-card.active .v-portrait img{filter:blur(13px)}
+.subject{position:absolute;left:50%;bottom:0;z-index:1;width:36%;max-width:230px;aspect-ratio:1/1.15;transform:translateX(-50%)}
+.subject::before{content:"";position:absolute;left:50%;top:4%;width:42%;aspect-ratio:1;border-radius:50%;background:linear-gradient(160deg,#3b3b42,#111115);box-shadow:inset -3px 2px 0 rgba(255,214,160,.4);transform:translateX(-50%)}
+.subject::after{content:"";position:absolute;left:0;right:0;bottom:0;height:58%;border-radius:50% 50% 0 0/70% 70% 0 0;background:linear-gradient(160deg,#37373d,#0f0f13);box-shadow:inset -4px 3px 0 rgba(255,214,160,.34)}
+.focus{position:absolute;left:50%;top:-5%;z-index:2;width:64%;aspect-ratio:1;border:1.5px solid var(--yellow);transform:translateX(-50%)}
+.hl-card.active .focus,.t-portrait.in .focus{animation:focusLock 1.2s var(--ease) .35s both}
+@keyframes focusLock{0%{opacity:0;transform:translateX(-50%) scale(1.45)}60%{opacity:1;transform:translateX(-50%) scale(.95)}100%{opacity:1;transform:translateX(-50%) scale(1)}}
+@media (max-width:734px){.v-portrait .subject{width:58%}}
+
+.v-live img{transition:transform 5s var(--ease)}
+.hl-card.active .v-live img{transform:scale(1.08)}
+.live-badge{position:absolute;left:20px;bottom:20px;z-index:2;display:inline-flex;align-items:center;gap:6px;padding:4px 11px 4px 7px;border-radius:999px;background:rgba(0,0,0,.42);color:#fff;font-size:.75rem;font-weight:600;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.live-badge svg{width:16px;height:16px}
+.live-badge .orbit{transform-origin:12px 12px}
+.hl-card.active .live-badge .orbit,.live-demo.playing .orbit{animation:spin 5s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.files{display:flex;flex-wrap:wrap;gap:8px}
+.files span{padding:4px 10px;border-radius:999px;background:var(--tile-2);color:var(--fg-2);font-family:var(--f-mono);font-size:.68rem;letter-spacing:0}
+.v-live .files{position:absolute;right:20px;bottom:20px;z-index:2}
+.v-live .files span{background:rgba(0,0,0,.42);color:#f5f5f7;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+@media (max-width:734px){.v-live .files{display:none}}
+
+.v-trip{display:flex;align-items:flex-end;justify-content:center;gap:4%;padding:0 6% 7%;background:radial-gradient(70% 60% at 50% 100%,rgba(41,151,255,.22),transparent 70%),var(--tile)}
+.ph{position:relative;flex:none;width:clamp(84px,17%,170px);aspect-ratio:9/19;border:5px solid #2c2c30;border-radius:24px;background:#000;overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,.5)}
+.ph img{position:static;display:block;object-position:66% 50%}
+.ph span{position:absolute;left:0;right:0;bottom:8px;color:#fff;font-size:.7rem;font-weight:600;text-align:center;text-shadow:0 1px 3px rgba(0,0,0,.7)}
+.lane{position:relative;align-self:center;width:26%;height:80px}
+.fx{position:absolute;left:0;bottom:0;animation:fx 4.4s ease-in-out infinite}
+.fy{display:block;animation:fy 4.4s ease-in-out infinite}
+.fy img{position:static;display:block;width:44px;height:44px;border:2px solid #fff;border-radius:8px;box-shadow:0 8px 20px rgba(0,0,0,.5)}
+@keyframes fx{0%,8%{left:0}42%,58%{left:calc(100% - 44px)}92%,100%{left:0}}
+@keyframes fy{0%,8%,42%,58%,92%,100%{transform:translateY(0)}25%,75%{transform:translateY(-56px)}}
+.hl-card:not(.active) .fx,.hl-card:not(.active) .fy{animation-play-state:paused}
+
+/* ---------- HDR sequence ---------- */
+.chapter{padding-block:clamp(110px,14vw,180px) clamp(24px,4vw,48px);text-align:center}
+.seq{position:relative;height:420vh}
+.seq-sticky{position:sticky;top:0;display:grid;place-items:center;height:100vh;overflow:hidden}
+.seq-frame{position:relative;width:100%;height:100%;border-radius:var(--rad,32px);background:var(--photo);overflow:hidden;transform:scale(var(--s,.84));will-change:transform}
+.seq-media{position:absolute;inset:0}
+.seq-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:62% 50%}
+.m-gain{opacity:var(--gain,0)}
+.m-hdr{clip-path:inset(0 calc(100% - var(--wipe,0%)) 0 0)}
+.seq-wipe{position:absolute;top:0;bottom:0;left:var(--wipe,0%);width:2px;margin-left:-1px;background:#fff;box-shadow:0 0 26px 7px rgba(255,214,150,.55);opacity:var(--wipe-o,0)}
+.seq-scrim{position:absolute;left:0;right:0;bottom:0;height:60%;background:linear-gradient(to top,rgba(0,0,0,.82),rgba(0,0,0,0));pointer-events:none}
+.seq-steps{position:absolute;top:76px;left:50%;display:flex;gap:4px;margin:0;padding:4px;list-style:none;border-radius:999px;background:rgba(42,42,45,.6);transform:translateX(-50%);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.seq-steps li{padding:6px 14px;border-radius:999px;color:rgba(245,245,247,.6);font-size:.75rem;font-weight:500;white-space:nowrap;transition:background-color .45s,color .45s}
+.seq-steps li.on{background:rgba(255,255,255,.16);color:#fff}
+.seq-illus{position:absolute;right:var(--gutter-r);bottom:16px;color:rgba(245,245,247,.5);font-size:.7rem}
+.seq-caps{position:absolute;left:0;right:0;bottom:0;padding-bottom:clamp(44px,9vh,96px)}
+.seq-caps .wrap{display:grid}
+.cap{grid-area:1/1;align-self:end;max-width:44rem;opacity:var(--o,0);transform:translateY(calc((1 - var(--o,0)) * 26px))}
+.cap h3{color:rgba(245,245,247,.62);font-size:clamp(1.75rem,4vw,3.5rem);line-height:1.1;letter-spacing:-.02em}
+.cap h3 strong{color:#fff;font-weight:600}
+.cap p{max-width:30em;margin-top:16px;color:rgba(245,245,247,.8);font-size:clamp(1.0625rem,1.6vw,1.3125rem);font-weight:500}
+.cap-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.cap-chips span{padding:5px 11px;border-radius:999px;background:rgba(255,255,255,.14);color:#fff;font-family:var(--f-mono);font-size:.7rem;letter-spacing:0}
+@media (max-width:734px){.seq-steps{top:64px}.seq-steps li{padding:5px 10px;font-size:.68rem}}
+
+/* ---------- light-up statement ---------- */
+.statement{padding-block:clamp(120px,16vw,220px)}
+.lightup{max-width:22em;font-size:clamp(1.75rem,4.4vw,3.5rem);font-weight:600;line-height:1.3;letter-spacing:-.015em}
+.lightup.js .c{color:var(--dim);transition:color .4s}
+.lightup.js .c.on{color:var(--fg)}
+.lightup.js em .c.on{color:var(--warm-1)}
+.lightup em{font-style:normal}
+
+/* ---------- bento ---------- */
+.bento{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.tile{display:flex;flex-direction:column;gap:26px;min-width:0;padding:clamp(28px,3.2vw,44px);border-radius:28px;background:var(--tile);overflow:hidden}
+.t-style{grid-column:span 2}
+.t-portrait{grid-row:span 2}
+.t-queue{grid-column:1/-1}
+.tile-copy{max-width:28em;font-size:clamp(1.1875rem,1.9vw,1.5rem);line-height:1.25}
+.tile-copy code{padding:1px 6px;border-radius:6px;background:var(--tile-2);color:var(--fg);font-family:var(--f-mono);font-size:.78em;letter-spacing:0}
+.demo-note{color:var(--fg-3);font-size:.75rem}
+@media (max-width:1068px){.bento{grid-template-columns:repeat(2,minmax(0,1fr))}.t-portrait{grid-row:auto}.t-queue{grid-column:auto}}
+@media (max-width:734px){.bento{grid-template-columns:minmax(0,1fr)}.t-style{grid-column:auto}.tile{border-radius:22px}}
+
+.rng{width:100%;height:4px;margin:0;border-radius:2px;background:linear-gradient(to right,var(--fg) 0 var(--v,50%),var(--tile-2) var(--v,50%) 100%);outline:none;cursor:pointer;-webkit-appearance:none;appearance:none}
+.rng::-webkit-slider-thumb{width:22px;height:22px;border:0;border-radius:50%;background:#fff;box-shadow:0 1px 6px rgba(0,0,0,.45);-webkit-appearance:none;appearance:none}
+.rng::-moz-range-thumb{width:22px;height:22px;border:0;border-radius:50%;background:#fff;box-shadow:0 1px 6px rgba(0,0,0,.45)}
+.rng:focus-visible{outline:2px solid var(--link);outline-offset:8px}
+
+.style-demo{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);align-items:center;gap:32px;margin-top:auto}
+.style-photo{position:relative;aspect-ratio:4/3;border-radius:18px;background:var(--photo);overflow:hidden}
+.style-photo img,.style-photo .grain{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:62% 50%}
+.style-photo .glow{opacity:var(--glow,.25);filter:blur(16px) brightness(1.35);mix-blend-mode:screen}
+.style-photo .grain{background-image:var(--noise,none);background-size:180px;opacity:var(--grain,.12);mix-blend-mode:overlay}
+.style-ctrls{display:grid;justify-items:start;gap:22px;min-width:0}
+.pad{position:relative;width:156px;height:156px;border-radius:24px;background:radial-gradient(circle,rgba(255,255,255,.26) 1px,transparent 1.8px) 0 0/19.5px 19.5px,linear-gradient(to bottom,rgba(255,255,255,.16),rgba(0,0,0,.52)),linear-gradient(to right,#5d86c4,#8b6aa8 45%,#d07a4c);cursor:grab;touch-action:none}
+.pad:active{cursor:grabbing}
+.pad-axis{position:absolute;color:rgba(255,255,255,.7);font-size:.62rem;font-weight:600;pointer-events:none}
+.pad-axis.x{left:50%;bottom:8px;transform:translateX(-50%)}
+.pad-axis.y{top:50%;left:8px;writing-mode:vertical-rl;transform:translateY(-50%)}
+.puck{position:absolute;left:50%;top:50%;width:24px;height:24px;margin:-12px;border:2.5px solid #fff;border-radius:50%;box-shadow:0 2px 10px rgba(0,0,0,.5);pointer-events:none}
+.sliders{display:grid;gap:18px;width:100%}
+.sl{display:grid;grid-template-columns:2.6em minmax(0,1fr);align-items:center;gap:14px;color:var(--fg-2);font-size:.875rem;font-weight:500}
+@media (max-width:734px){.style-demo{grid-template-columns:minmax(0,1fr)}.style-ctrls{grid-template-columns:auto minmax(0,1fr);align-items:center;gap:20px}.pad{width:128px;height:128px}.demo-note{grid-column:1/-1}}
+
+.portrait-demo{display:flex;flex:1;flex-direction:column;gap:22px;margin-top:auto}
+.portrait-photo{position:relative;flex:1;min-height:340px;border-radius:18px;background:var(--photo);overflow:hidden}
+.portrait-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:62% 50%;filter:blur(var(--blur,6px));transform:scale(1.1)}
+.portrait-photo .subject{width:62%}
+.aperture{display:grid;grid-template-columns:auto minmax(0,1fr) 3.6em;align-items:center;gap:14px;color:var(--fg-2);font-size:.875rem;font-weight:500}
+.aperture output{color:var(--fg);font-weight:600;font-variant-numeric:tabular-nums;text-align:right}
+
+.live-demo{position:relative;display:block;width:100%;aspect-ratio:4/3;margin-top:auto;padding:0;border:0;border-radius:18px;background:var(--photo);overflow:hidden;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.live-demo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:62% 50%;transition:transform .7s var(--ease),filter .7s var(--ease);pointer-events:none}
+.live-demo.playing img{transform:scale(1.09);filter:brightness(1.14) saturate(1.12);animation:drift 1.4s ease-in-out infinite alternate}
+@keyframes drift{from{object-position:60% 48%}to{object-position:65% 53%}}
+.live-demo .live-badge{left:14px;bottom:14px}
+.live-hint{position:absolute;right:14px;bottom:16px;color:rgba(255,255,255,.78);font-size:.75rem;transition:opacity .3s}
+.live-demo.playing .live-hint{opacity:0}
+
+.viz-check{display:flex;align-items:center;gap:18px;margin-top:auto;color:var(--fg-2);font-size:.875rem;font-weight:500}
+.check{flex:none;width:76px;height:76px}
+.check circle,.check path{fill:none;stroke:var(--green);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:0;transition:stroke-dashoffset 1.2s var(--ease) .25s}
+.check path{transition-delay:.75s}
+.tile.pre:not(.in) .check circle,.tile.pre:not(.in) .check path{stroke-dashoffset:1}
+
+.t-queue{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);align-items:center;gap:36px}
+.queue-mock{display:grid;gap:10px;padding:16px;border-radius:20px;background:var(--bg-2)}
+.q-row{display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:6px 14px;padding:10px 14px 12px 10px;border-radius:14px;background:var(--tile)}
+.q-row img{grid-row:span 2;width:44px;height:44px;border-radius:9px;object-fit:cover;object-position:64% 50%;background:var(--photo)}
+.q-name{overflow:hidden;color:var(--fg);font-family:var(--f-mono);font-size:.75rem;letter-spacing:0;text-overflow:ellipsis;white-space:nowrap}
+.q-state{color:var(--fg-2);font-size:.75rem;font-weight:500}
+.q-state.ok{color:var(--green)}
+.q-bar{grid-column:2/4;height:4px;border-radius:2px;background:var(--tile-2);overflow:hidden}
+.q-bar i{display:block;width:var(--w,0%);height:100%;border-radius:2px;background:var(--link)}
+.q-bar i.ok{background:var(--green)}
+.q-bar i.run{animation:qrun 3.4s var(--ease) infinite}
+@keyframes qrun{from{width:6%}to{width:94%}}
+.q-foot{display:flex;justify-content:space-between;gap:12px;padding:4px 6px 0;color:var(--fg-3);font-size:.72rem}
+@media (max-width:1068px){.t-queue{grid-template-columns:minmax(0,1fr)}}
+
+/* ---------- stats ---------- */
+.stat-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:36px;margin:0;padding:0;list-style:none}
+.stat-row li{min-width:0;padding-top:26px;border-top:1px solid var(--line)}
+.s-v{background:linear-gradient(120deg,var(--warm-1),var(--warm-2) 70%);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:clamp(3.75rem,7vw,6rem);font-weight:600;line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.s-u{margin-top:12px;font-size:1.3125rem;font-weight:600}
+.s-d{margin-top:6px;color:var(--fg-2);font-size:.9375rem}
+@media (max-width:1068px){.stat-row{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:48px}}
+
+/* ---------- modes: exploded file view ---------- */
+.modes-sec{overflow:hidden}
+.mode-switch{display:grid;justify-items:center;gap:18px}
+.mseg{position:relative;display:inline-flex;padding:4px;border-radius:999px;background:var(--tile);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.mseg-ind{position:absolute;left:4px;top:4px;bottom:4px;width:0;border-radius:999px;background:#f5f5f7;transition:transform .55s var(--ease),width .55s var(--ease)}
+.mseg button{position:relative;z-index:1;padding:12px 28px;border:0;border-radius:999px;background:none;color:var(--fg-2);font-size:1.0625rem;font-weight:600;cursor:pointer;transition:color .4s}
+.mseg button:hover{color:var(--fg)}
+.mseg button[aria-pressed="true"]{color:#1d1d1f}
+.mode-desc{display:grid;text-align:center}
+.mode-desc p{grid-area:1/1;color:var(--fg-2);font-size:clamp(1.0625rem,1.6vw,1.3125rem);font-weight:500;opacity:0;transform:translateY(10px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.mode-desc p.on{opacity:1;transform:none}
+@media (max-width:420px){.mseg button{padding:11px 20px;font-size:1rem}}
+
+.xstage{--s:300px;--gap:64px;--x0:34%;--y0:470px;--mc:var(--teal);position:relative;margin-top:clamp(32px,4vw,56px)}
+.xstage[data-mode="apple"]{--mc:#2997ff}
+.xviz{position:relative;height:640px}
+.xglow{position:absolute;left:var(--x0);top:calc(var(--y0) - 150px);width:min(760px,100%);aspect-ratio:1.5;border-radius:50%;opacity:0;transform:translate(-50%,-50%);transition:opacity 1.1s var(--ease);pointer-events:none}
+.xglow.oppo{background:radial-gradient(closest-side,rgba(63,208,184,.26),transparent)}
+.xglow.apple{background:radial-gradient(closest-side,rgba(41,151,255,.3),transparent)}
+.xstage[data-mode="oppo"] .xglow.oppo,.xstage[data-mode="apple"] .xglow.apple{opacity:1}
+.iso{position:absolute;left:var(--x0);top:var(--y0);width:var(--s);height:var(--s);margin:calc(var(--s) / -2) 0 0 calc(var(--s) / -2);transform:rotateX(58deg) rotateZ(-38deg);transform-style:preserve-3d}
+.ly,.lb{--zi:calc(var(--idx,0) * var(--gap) * var(--spread,1))}
+.ly{position:absolute;inset:0;border-radius:26px;overflow:hidden;transform:translate3d(0,0,var(--zi));transition:transform .9s var(--ease),opacity .6s var(--ease),background-color .6s,box-shadow .6s}
+.ly.out{opacity:0;transform:translate3d(70px,-70px,calc(var(--zi) + 140px))}
+.ly img{display:block;width:100%;height:100%;object-fit:cover;object-position:62% 50%}
+.ly-base{background:var(--photo);box-shadow:0 40px 80px rgba(0,0,0,.7),inset 0 0 0 1px rgba(255,255,255,.18)}
+.ly-gain{opacity:.88;background:#000;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
+.ly-exif{background:repeating-linear-gradient(rgba(255,255,255,.34) 0 3px,transparent 3px 22px) 36px 40px/52% 62% no-repeat,rgba(142,142,147,.2);box-shadow:inset 0 0 0 1px rgba(255,255,255,.22)}
+.ly-mark{background-color:color-mix(in srgb,var(--mc) 30%,transparent);box-shadow:inset 0 0 0 1.5px var(--mc)}
+.ly-extras{background:radial-gradient(circle,rgba(255,255,255,.5) 1.6px,transparent 2.2px) 0 0/24px 24px,rgba(142,142,147,.16);box-shadow:inset 0 0 0 1px rgba(255,255,255,.2)}
+.ly-trailer{background:repeating-linear-gradient(45deg,rgba(63,208,184,.42) 0 7px,transparent 7px 16px),rgba(63,208,184,.1);box-shadow:inset 0 0 0 1.5px rgba(63,208,184,.8)}
+.ly-style{background:linear-gradient(135deg,rgba(93,134,196,.82),rgba(139,106,168,.76) 45%,rgba(208,122,76,.82));box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)}
+.ly-portrait{background:radial-gradient(34% 40% at 56% 52%,rgba(255,255,255,.92),rgba(255,255,255,.3) 62%,rgba(255,255,255,.06));box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)}
+.xfile{position:absolute;left:var(--x0);top:calc(var(--y0) - 5 * var(--gap) * var(--spread,1) * .848 - var(--s) * .372 - 46px);padding:6px 14px;border-radius:999px;background:var(--tile);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);color:var(--fg);font-family:var(--f-mono);font-size:.8125rem;letter-spacing:0;white-space:nowrap;transform:translateX(-50%);transition:top .9s var(--ease)}
+.xdest{position:absolute;left:var(--x0);top:calc(var(--y0) + var(--s) * .372 + 28px);display:grid;justify-items:center;transform:translateX(-50%);white-space:nowrap}
+.xdest span{grid-area:1/1;color:var(--fg-2);font-size:.9375rem;font-weight:600;opacity:0;transition:opacity .6s var(--ease)}
+.xstage[data-mode="oppo"] .xdest [data-mode="oppo"],.xstage[data-mode="apple"] .xdest [data-mode="apple"]{opacity:1}
+.xlabels{position:absolute;inset:0;margin:0;padding:0;list-style:none;pointer-events:none}
+.lb{position:absolute;left:calc(var(--x0) + var(--s) * .702 + 66px);top:calc(var(--y0) - var(--zi) * .848 + var(--s) * .046);display:grid;gap:1px;width:max-content;max-width:min(340px,calc(100% - var(--x0) - var(--s) * .702 - 66px));opacity:var(--lo,1);transform:translateY(-50%);transition:top .9s var(--ease),opacity .35s var(--ease)}
+.lb::before{content:"";position:absolute;right:calc(100% + 12px);top:50%;width:46px;height:1px;background:rgba(255,255,255,.3)}
+.lb::after{content:"";position:absolute;right:calc(100% + 58px);top:50%;width:7px;height:7px;margin-top:-3.5px;border-radius:50%;background:var(--c)}
+.lb b{color:var(--fg);font-size:1.1875rem;font-weight:600;line-height:1.25}
+.lb span{color:var(--fg-2);font-size:.875rem;line-height:1.35}
+.lb.out,.lb.swap{opacity:0}
+.modes-foot{margin-top:clamp(32px,4vw,48px);color:var(--fg-2);text-align:center}
+@media (max-width:1068px){
+  .xstage{--s:250px;--gap:60px;--x0:32%;--y0:440px}
+  .xviz{height:590px}
+  .lb b{font-size:1.0625rem}
+  .lb span{font-size:.8125rem}
+}
+@media (max-width:734px){
+  .xstage{--s:min(200px,52vw);--gap:44px;--x0:50%;--y0:calc(var(--s) * .372 + 5 * var(--gap) * .848 + 64px)}
+  .xviz{height:calc(var(--y0) + var(--s) * .372 + 64px)}
+  .xlabels{position:static;display:flex;flex-direction:column;gap:16px;max-width:420px;margin:8px auto 0}
+  .lb{position:static;display:grid;grid-template-columns:10px minmax(0,1fr);column-gap:14px;width:auto;max-width:none;opacity:1;transform:none}
+  .lb::before{display:none}
+  .lb::after{position:static;grid-column:1;grid-row:1 / span 2;margin-top:8px}
+  .lb b,.lb span{grid-column:2}
+  .lb.out{display:none}
+}
+
+/* ---------- round trip gallery (light) ---------- */
+.gallery{overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding-inline:var(--edge);overscroll-behavior-x:contain;scrollbar-width:none}
+.gallery::-webkit-scrollbar{display:none}
+.g-track{display:flex;gap:20px;width:max-content;margin:0;padding:4px var(--edge) 12px;list-style:none}
+.g-card{display:flex;flex:none;flex-direction:column;width:min(82vw,400px);border-radius:28px;background:var(--tile);overflow:hidden;scroll-snap-align:start}
+.g-viz{display:grid;place-items:center;height:240px;padding:12px 24px 0;background:radial-gradient(80% 80% at 50% 110%,var(--g),transparent 72%)}
+.g-viz svg{width:100%;max-width:340px;height:auto;overflow:visible}
+.g-viz .body{fill:none;stroke:var(--line);stroke-width:2.5}
+.g-viz .scr{fill:var(--tile-2)}
+.g-viz .dv.on .body{stroke:var(--rc)}
+.g-viz .app{fill:var(--tile-2)}
+.g-viz .dv.on .app{fill:var(--rc)}
+.g-viz .appln{fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.g-viz text{fill:var(--fg-3);font-family:var(--f-sans);font-size:12px;font-weight:600;text-anchor:middle}
+.g-viz .dv.on text{fill:var(--fg)}
+.g-viz .lk{fill:none;stroke:var(--line);stroke-width:2.5;stroke-dasharray:4 7;stroke-linecap:round}
+.g-viz .lk.on{stroke:var(--rc);animation:dash 1s linear infinite}
+.g-viz .arrow{fill:none;stroke:var(--rc);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+@keyframes dash{to{stroke-dashoffset:-11}}
+.g-body{display:grid;gap:10px;padding:26px 30px 36px}
+.g-n{color:var(--fg-3);font-size:.8125rem;font-weight:600}
+.g-body .tt{font-size:1.3125rem;line-height:1.3}
+.g-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 24px;margin-top:28px}
+.g-foot p{max-width:40rem;color:var(--fg-2);font-size:.9375rem}
+.g-nav{display:flex;gap:14px}
+.g-nav button{display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:50%;background:var(--tile-2);color:var(--fg);cursor:pointer;transition:opacity .3s,background-color .2s}
+.g-nav button:hover:not(:disabled){background:#dcdce1}
+.g-nav button:disabled{opacity:.42;cursor:default}
+.g-nav svg{width:18px;height:18px}
+
+/* ---------- app screens (light) ---------- */
+.seg-wrap{display:flex;justify-content:center}
+.seg{position:relative;display:inline-flex;padding:3px;border-radius:999px;background:#e3e3e8}
+.seg-ind{position:absolute;left:3px;top:3px;bottom:3px;width:0;border-radius:999px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.12);transition:transform .5s var(--ease),width .5s var(--ease)}
+.seg button{position:relative;z-index:1;padding:9px 20px;border:0;border-radius:999px;background:none;color:var(--fg-2);font-size:.875rem;font-weight:500;cursor:pointer;transition:color .3s}
+.seg button[aria-selected="true"]{color:var(--fg)}
+@media (max-width:420px){.seg button{padding:9px 13px}}
+.screens{position:relative;max-width:1000px;aspect-ratio:16/10;margin:48px auto 0}
+.screen{position:absolute;inset:0;display:grid;place-items:center;margin:0;opacity:0;transform:scale(.96);transition:opacity .8s var(--ease),transform 1s var(--ease);pointer-events:none}
+.screen.on{opacity:1;transform:none;pointer-events:auto}
+.screen > img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 26px 44px rgba(0,0,0,.2))}
+.phone-frame{box-sizing:border-box;height:100%;aspect-ratio:720/1584;padding:9px;border-radius:48px;background:#1d1d1f;box-shadow:0 26px 50px rgba(0,0,0,.25),inset 0 0 0 1.5px #3a3a3e}
+.phone-frame img{display:block;width:100%;height:100%;border-radius:39px;object-fit:cover}
+.screen-cap{margin-top:24px;color:var(--fg-2);font-size:.9375rem;text-align:center}
+.flow5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:32px;margin:88px 0 0;padding:0;list-style:none}
+.flow5 li{min-width:0}
+.flow5 .n{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--fg);color:var(--bg);font-size:.875rem;font-weight:600}
+.flow5 h3{margin-top:16px;font-size:1.1875rem}
+.flow5 p{margin-top:6px;color:var(--fg-2);font-size:.9375rem}
+.extras{margin-top:44px;color:var(--fg-2);font-size:.9375rem;text-align:center}
+@media (max-width:734px){.screens{aspect-ratio:3/4}}
+@media (max-width:1068px){
+  .flow5{grid-template-columns:minmax(0,1fr);gap:0;margin-top:64px}
+  .flow5 li{display:grid;grid-template-columns:32px minmax(0,1fr);gap:2px 16px;padding-block:18px;border-top:1px solid var(--line)}
+  .flow5 .n{grid-row:span 2}
+  .flow5 h3{margin-top:3px}
+  .flow5 p{margin-top:0}
+}
+
+/* ---------- compare + download (light) ---------- */
+.cmp-scroll{overflow-x:auto;margin-inline:calc(var(--gutter-l) * -1) calc(var(--gutter-r) * -1);padding:4px var(--gutter-r) 12px var(--gutter-l);scrollbar-width:thin}
+.cmp{display:grid;grid-auto-columns:minmax(172px,1fr);grid-auto-flow:column;grid-template-rows:repeat(8,auto);gap:0 18px;min-width:min-content;margin:0;padding:0;list-style:none}
+.cmp-col{display:grid;grid-row:span 8;grid-template-rows:subgrid;justify-items:center;padding:30px 18px 14px;border-radius:24px;background:var(--tile);text-align:center}
+.cmp-col.here{box-shadow:inset 0 0 0 2px var(--link)}
+.cmp-ico{width:60px;height:60px;color:var(--fg)}
+.cmp-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;min-height:22px;margin-top:14px}
+.tag{padding:2px 9px;border-radius:999px;font-size:.6875rem;font-weight:600;line-height:1.6}
+.tag-here{background:var(--link);color:#fff}
+.tag-unsigned{background:#fff4d6;color:#8a5a00}
+.tag-preview{background:var(--tile-2);color:var(--fg-2)}
+.cmp-col h3{margin-top:10px;font-size:1.5rem;letter-spacing:-.015em}
+.cmp-kind{margin-top:4px;color:var(--fg-2);font-size:.8125rem}
+.cmp-col .btn{margin:20px 0 24px}
+.cf{width:100%;padding-block:14px;border-top:1px solid var(--line);font-size:.875rem;line-height:1.4}
+.cf span{display:block;margin-bottom:3px;color:var(--fg-3);font-size:.75rem}
+.dl-more{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 28px;margin-top:40px;color:var(--fg-2);font-size:.9375rem}
+
+/* ---------- footnotes + footer (light) ---------- */
+.fnotes{padding-block:40px 8px;color:var(--fg-2);font-size:.75rem;line-height:1.65}
+.fnotes ol{display:grid;gap:10px;margin:0;padding-left:1.4em}
+.fnotes li:target{color:var(--fg)}
+.fnotes a{color:var(--link)}
+.fnotes code{font-family:var(--f-mono)}
+.fn-extra{display:grid;gap:10px;margin-top:20px}
+.foot{padding-block:8px 36px;color:var(--fg-2);font-size:.75rem}
+.crumbs{display:flex;align-items:center;gap:10px;padding-block:16px;border-top:1px solid var(--line);color:var(--fg)}
+.crumbs img{width:18px;height:18px;border-radius:4px}
+.crumbs span{color:var(--fg-3)}
+.foot-grid{display:grid;grid-template-columns:minmax(0,2fr) repeat(2,minmax(0,1fr));gap:28px;padding-block:20px 28px}
+.foot-about p{max-width:30rem;line-height:1.65}
+.foot h4{margin-bottom:10px;color:var(--fg);font-size:.75rem}
+.foot ul{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.foot a{text-decoration:none}
+.foot a:hover{color:var(--fg);text-decoration:underline;text-underline-offset:2px}
+.legal{display:grid;gap:6px;padding-top:16px;border-top:1px solid var(--line);line-height:1.65}
+@media (max-width:734px){.foot-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.foot-about{grid-column:1/-1}}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .seq{height:auto}
+  .seq-sticky{position:relative;display:block;height:auto}
+  .seq-frame{height:auto;border-radius:0;transform:none}
+  .seq-media{position:relative;aspect-ratio:16/10;max-height:80vh}
+  .seq-steps,.seq-wipe,.seq-scrim{display:none}
+  .seq-caps{position:static;padding:36px 0 0}
+  .seq-caps .wrap{grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:28px}
+  .cap{grid-area:auto;opacity:1;transform:none}
+  .cap h3{font-size:1.5rem}
+  .cap h3 br{display:none}
+  [data-reveal].pre:not(.in){opacity:1;transform:none}
+  .check circle,.check path{stroke-dashoffset:0!important}
+  .v-split .top{clip-path:inset(0 0 0 50%)}
+}
+</style>
+</head>
+<body>
+
+<div class="ribbon"><div class="wrap"><p>XDRemux 0.4.3 现已推出，新增华为 Mate 70 人像转换。<a href="https://github.com/BeetMan/XDRemux-Flutter/blob/main/tools/installer/RELEASE_NOTES_v0.4.3.md" target="_blank" rel="noopener">查看更新记录 ›</a></p></div></div>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="nav-title" href="#top"><img src="assets/icon.png" alt="" width="22" height="22">XDRemux</a>
+    <ul class="nav-links">
+      <li><a href="#highlights">亮点</a></li>
+      <li><a href="#hdr">HDR</a></li>
+      <li><a href="#features">功能</a></li>
+      <li><a href="#modes">输出模式</a></li>
+      <li><a href="#roundtrip">往返工作流</a></li>
+      <li><a href="https://github.com/BeetMan/XDRemux-Flutter" target="_blank" rel="noopener">GitHub</a></li>
+    </ul>
+    <a class="btn btn-sm" href="#download">下载</a>
+  </div>
+</header>
+
+<main id="top">
+  <!-- ========== hero ========== -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="rise"><h1 class="hero-name">XDRemux</h1></div>
+      <p class="hero-tag rise" style="--d:.15s">让照片跨越设备，<br class="br-s">也保留继续创作的可能。</p>
+      <figure class="hero-media rise" id="heroMedia" style="--d:.3s" aria-label="HDR 照片示意">
+        <canvas id="heroBase" aria-hidden="true"></canvas>
+        <canvas id="heroGlints" aria-hidden="true"></canvas>
+        <span class="hdr-badge" aria-hidden="true">HDR</span>
+        <span class="media-note">示意图 · 非实拍</span>
+        <button type="button" class="media-ctrl" id="heroPlay" aria-label="暂停动画">
+          <svg class="i-pause" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="3" y="2" width="3.6" height="12" rx="1"/><rect x="9.4" y="2" width="3.6" height="12" rx="1"/></svg>
+          <svg class="i-play" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4 2.3v11.4c0 .7.8 1.2 1.4.8l9-5.7c.6-.4.6-1.2 0-1.6l-9-5.7C4.8 1.1 4 1.6 4 2.3Z"/></svg>
+        </button>
+      </figure>
+      <div class="hero-buy rise" style="--d:.45s">
+        <a class="btn" id="heroCta" href="#download">下载</a>
+        <p class="price">免费下载，基于 MIT 许可开源。<br>支持 Windows、macOS、Android、iOS 与 HarmonyOS。<sup><a class="fn-ref" href="#fn-1">1</a></sup></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== highlights ========== -->
+  <section class="hl" id="highlights" aria-label="速览亮点">
+    <div class="wrap hl-head">
+      <h2 class="sec-title">速览亮点。</h2>
+      <a class="more" href="#features">查看全部功能 ›</a>
+    </div>
+    <div class="hl-scroller" id="hlScroller">
+      <ul class="hl-track">
+        <li class="hl-card active">
+          <div class="hl-vis v-split" aria-hidden="true">
+            <img data-scene="sdr" alt=""><img data-scene="hdr" class="top" alt=""><i class="line"></i>
+            <span class="v-lbl l">其他设备上的 ProXDR</span><span class="v-lbl r">转换后的 HDR HEIC</span>
+          </div>
+          <div class="scrim"></div>
+          <p class="hl-cap tt"><strong>ProXDR 转为标准 HDR HEIC。</strong>在 iPhone 和 Mac 上，高光也能亮起来。<sup><a class="fn-ref" href="#fn-2">2</a></sup></p>
+        </li>
+        <li class="hl-card">
+          <div class="hl-vis v-styles" aria-hidden="true">
+            <figure style="--i:0"><img data-scene="hdr" alt=""><figcaption>标准</figcaption></figure>
+            <figure style="--i:1"><img data-scene="hdr" alt="" style="filter:sepia(.35) saturate(1.25) hue-rotate(-6deg)"><figcaption>暖调</figcaption></figure>
+            <figure style="--i:2"><img data-scene="hdr" alt="" style="filter:saturate(.8) hue-rotate(-20deg) brightness(1.06)"><figcaption>冷调</figcaption></figure>
+            <figure style="--i:3"><img data-scene="hdr" alt="" style="filter:grayscale(1) contrast(1.2)"><figcaption>黑白</figcaption></figure>
+          </div>
+          <p class="hl-cap tt"><strong>写入 Apple 摄影风格。</strong>照片到了 Apple 照片里，风格还能接着调。</p>
+        </li>
+        <li class="hl-card">
+          <div class="hl-vis v-portrait" aria-hidden="true"><img data-scene="hdr" alt=""><div class="subject"><span class="focus"></span></div></div>
+          <div class="scrim"></div>
+          <p class="hl-cap tt"><strong>人像，保留真实景深。</strong>交给 Apple 照片重新调整虚化。</p>
+        </li>
+        <li class="hl-card">
+          <div class="hl-vis v-live" aria-hidden="true">
+            <img data-scene="hdr" alt="">
+            <span class="live-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="5.6"/><circle class="orbit" cx="12" cy="12" r="9.2" stroke-dasharray="1.6 2.2"/></svg>实况</span>
+            <span class="files"><span>IMG_0423.HEIC</span><span>IMG_0423.MOV</span></span>
+          </div>
+          <div class="scrim"></div>
+          <p class="hl-cap tt"><strong>动态照片，配对成 Live Photo。</strong>同名 HEIC 与 MOV，一起导入 Apple 照片。</p>
+        </li>
+        <li class="hl-card">
+          <div class="hl-vis v-trip" aria-hidden="true">
+            <div class="ph"><img data-scene="hdr" alt=""><span>OPPO</span></div>
+            <div class="lane"><span class="fx"><span class="fy"><img data-scene="hdr" alt=""></span></span></div>
+            <div class="ph"><img data-scene="hdr" alt="" style="filter:sepia(.3) saturate(1.2) hue-rotate(-6deg)"><span>iPhone</span></div>
+          </div>
+          <p class="hl-cap tt"><strong>OPPO 拍，iPhone 修，再带回 OPPO。</strong>原机水印与元数据一并恢复。</p>
+        </li>
+      </ul>
+    </div>
+    <div class="hl-controls">
+      <div class="hl-dots" role="group" aria-label="选择亮点">
+        <button type="button" class="dot on" aria-label="HDR 转换" aria-current="true"><span class="fill"></span></button>
+        <button type="button" class="dot" aria-label="摄影风格"><span class="fill"></span></button>
+        <button type="button" class="dot" aria-label="人像"><span class="fill"></span></button>
+        <button type="button" class="dot" aria-label="Live Photo"><span class="fill"></span></button>
+        <button type="button" class="dot" aria-label="往返工作流"><span class="fill"></span></button>
+      </div>
+      <button type="button" class="media-ctrl" id="hlPlay" aria-label="暂停">
+        <svg class="i-pause" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="3" y="2" width="3.6" height="12" rx="1"/><rect x="9.4" y="2" width="3.6" height="12" rx="1"/></svg>
+        <svg class="i-play" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4 2.3v11.4c0 .7.8 1.2 1.4.8l9-5.7c.6-.4.6-1.2 0-1.6l-9-5.7C4.8 1.1 4 1.6 4 2.3Z"/></svg>
+        <svg class="i-replay" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.7-4"/><path d="M2.5 2.2v3.3h3.3"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- ========== HDR chapter ========== -->
+  <section class="chapter" id="hdr">
+    <div class="wrap" data-reveal>
+      <p class="eyebrow">HDR 转换</p>
+      <h2 class="sec-title">藏起来的高光，<br>重新亮起来。</h2>
+    </div>
+  </section>
+  <section class="seq" id="seq" aria-label="HDR 转换过程">
+    <div class="seq-sticky">
+      <div class="seq-frame" id="seqFrame">
+        <div class="seq-media">
+          <img data-scene="sdr" alt="" aria-hidden="true">
+          <img data-scene="gain" class="m-gain" alt="" aria-hidden="true">
+          <img data-scene="hdr" class="m-hdr" alt="" aria-hidden="true">
+          <div class="seq-wipe" aria-hidden="true"></div>
+          <div class="seq-scrim" aria-hidden="true"></div>
+          <ol class="seq-steps" aria-hidden="true"><li class="on">SDR 底图</li><li>增益图</li><li>ISO 21496-1 HDR</li></ol>
+          <span class="seq-illus">示意图 · 非实拍</span>
+        </div>
+        <div class="seq-caps">
+          <div class="wrap">
+            <div class="cap" style="--o:1">
+              <h3><strong>在别的设备上，</strong><br>ProXDR 照片只剩 SDR。</h3>
+              <p>高光发灰，天空和灯光的层次被压平。</p>
+            </div>
+            <div class="cap">
+              <h3><strong>高光信息，</strong><br>其实一直都在。</h3>
+              <p>它藏在增益图里，记录每个像素能亮多少。越亮的地方，能提亮得越多。</p>
+            </div>
+            <div class="cap">
+              <h3><strong>XDRemux 把它</strong><br>译成通用语言。</h3>
+              <p>LHDR / UHDR 增益图转换为 ISO 21496-1 标准，写进 HEIC。</p>
+              <div class="cap-chips"><span>LHDR</span><span>UHDR</span><span>→ tmap · ISO 21496-1</span></div>
+            </div>
+            <div class="cap">
+              <h3><strong>高光，再现。</strong></h3>
+              <p>在支持 HDR 的设备与应用里，高光重新亮起来。<sup><a class="fn-ref" href="#fn-3">3</a></sup></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== statement ========== -->
+  <section class="statement">
+    <div class="wrap">
+      <p class="lightup" id="lightup">照片离开拍摄它的手机，<em>高光、景深和动态画面</em>常常就没法被别的设备读懂。XDRemux 把它们转换成标准格式，让照片在 iPhone、Mac 和更多设备上<em>被看见，也能被继续编辑。</em></p>
+    </div>
+  </section>
+
+  <!-- ========== features (bento) ========== -->
+  <section class="section" id="features">
+    <div class="wrap">
+      <header class="sec-head" data-reveal>
+        <p class="eyebrow">进一步了解</p>
+        <h2 class="sec-title">不只是 HDR。</h2>
+        <p class="lead">风格、景深和实况，也能一起带走。<sup><a class="fn-ref" href="#fn-4">4</a></sup></p>
+      </header>
+      <div class="bento">
+        <article class="tile t-style" data-reveal>
+          <p class="tile-copy tt"><strong>Apple 摄影风格。</strong>写入完整的风格编辑结构，照片到了 Apple 照片里还能继续调整。摄影风格 3 还加入质感、胶片颗粒与光晕。<sup><a class="fn-ref" href="#fn-5">5</a></sup></p>
+          <div class="style-demo">
+            <div class="style-photo" id="styleBox">
+              <img data-scene="hdr" id="stylePhoto" alt="">
+              <img data-scene="hdr" class="glow" alt="">
+              <span class="grain"></span>
+            </div>
+            <div class="style-ctrls">
+              <div class="pad" id="stylePad" role="slider" tabindex="0" aria-label="色调与色彩调节盘" aria-valuemin="-1" aria-valuemax="1" aria-valuenow="0" aria-valuetext="色调 0，色彩 0">
+                <span class="pad-axis x">色彩</span><span class="pad-axis y">色调</span>
+                <span class="puck"></span>
+              </div>
+              <div class="sliders">
+                <label class="sl" for="slTex">质感<input class="rng" type="range" id="slTex" min="0" max="100" value="50"></label>
+                <label class="sl" for="slGrain">颗粒<input class="rng" type="range" id="slGrain" min="0" max="100" value="30"></label>
+                <label class="sl" for="slGlow">光晕<input class="rng" type="range" id="slGlow" min="0" max="100" value="35"></label>
+              </div>
+              <p class="demo-note">拖动试试 · 示意效果</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="tile t-portrait" data-reveal style="--d:.1s">
+          <p class="tile-copy tt"><strong>人像，保留真实景深。</strong>读取 OPPO 的 <code>rear.depth</code> 与未虚化底图，交给 Apple 照片重新虚化。v0.4.3 新增华为 Mate 70 人像。<sup><a class="fn-ref" href="#fn-6">6</a></sup></p>
+          <div class="portrait-demo">
+            <div class="portrait-photo" id="portraitBox"><img data-scene="hdr" alt=""><div class="subject"><span class="focus"></span></div></div>
+            <label class="aperture" for="slAperture">光圈<input class="rng" type="range" id="slAperture" min="0" max="100" value="28"><output id="fVal" for="slAperture">ƒ/2.8</output></label>
+            <p class="demo-note">拖动调整景深 · 示意效果</p>
+          </div>
+        </article>
+
+        <article class="tile t-live" data-reveal>
+          <p class="tile-copy tt"><strong>动态照片，配对成 Live Photo。</strong>生成同名 HEIC 与 MOV，带配对标识和封面时刻。<sup><a class="fn-ref" href="#fn-7">7</a></sup></p>
+          <button type="button" class="live-demo" id="liveDemo" aria-label="按住播放实况示意">
+            <img data-scene="hdr" alt="">
+            <span class="live-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="5.6"/><circle class="orbit" cx="12" cy="12" r="9.2" stroke-dasharray="1.6 2.2"/></svg>实况</span>
+            <span class="live-hint">按住查看</span>
+          </button>
+          <div class="files" aria-label="输出文件"><span>IMG_0423.HEIC</span><span>IMG_0423.MOV</span></div>
+        </article>
+
+        <article class="tile t-huawei" data-reveal style="--d:.1s">
+          <p class="tile-copy tt"><strong>华为原生 HDR，</strong>已经兼容的照片，不必重复转换。已验证的 Mate 70 系列默认保留原文件。<sup><a class="fn-ref" href="#fn-8">8</a></sup></p>
+          <div class="viz-check">
+            <svg class="check" viewBox="0 0 80 80" aria-hidden="true"><circle pathLength="1" cx="40" cy="40" r="34"/><path pathLength="1" d="M25 41l10 10 20-22"/></svg>
+            <span>已含标准增益图<br>无需转换</span>
+          </div>
+        </article>
+
+        <article class="tile t-queue" data-reveal>
+          <p class="tile-copy tt"><strong>批量转换，随时可恢复。</strong>队列检查点会记住进度，失败的照片可以重试，完成后还会通知你。转换在本机完成。</p>
+          <div class="queue-mock" aria-hidden="true">
+            <div class="q-row"><img data-scene="hdr" alt=""><span class="q-name">IMG_20260918_183204.HEIC</span><span class="q-state ok">已完成</span><span class="q-bar"><i class="ok" style="--w:100%"></i></span></div>
+            <div class="q-row"><img data-scene="hdr" alt="" style="filter:hue-rotate(-14deg) saturate(1.1)"><span class="q-name">IMG_20260918_183517.HEIC</span><span class="q-state">转换中</span><span class="q-bar"><i class="run" style="--w:64%"></i></span></div>
+            <div class="q-row"><img data-scene="hdr" alt="" style="filter:brightness(.8) saturate(.8)"><span class="q-name">IMG_20260919_071122.HEIC</span><span class="q-state">等待中</span><span class="q-bar"><i style="--w:0%"></i></span></div>
+            <p class="q-foot"><span>Apple 标准 · 摄影风格</span><span>检查点已保存</span></p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== stats ========== -->
+  <section class="section stats" style="padding-top:0">
+    <div class="wrap">
+      <header class="sec-head" data-reveal>
+        <p class="eyebrow">跨平台</p>
+        <h2 class="sec-title">五个平台。<br>一套引擎。</h2>
+        <p class="lead">Flutter 界面加 Rust 图像处理核心。识别与转换逻辑，在每个平台上都一样。</p>
+      </header>
+      <ul class="stat-row">
+        <li data-reveal><p class="s-v" data-count="5">5</p><p class="s-u">个平台</p><p class="s-d">Windows、macOS、Android、iOS 与 HarmonyOS</p></li>
+        <li data-reveal style="--d:.1s"><p class="s-v" data-count="2">2</p><p class="s-u">种输出模式</p><p class="s-d">OPPO 兼容与 Apple 标准</p></li>
+        <li data-reveal style="--d:.2s"><p class="s-v" data-count="3">3</p><p class="s-u">种动态照片输出</p><p class="s-d">仅静帧、静帧 + 视频、Live Photo 配对</p></li>
+        <li data-reveal style="--d:.3s"><p class="s-v" data-count="1">1</p><p class="s-u">套 Rust 引擎</p><p class="s-d">五个平台共用同一套转换核心</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ========== modes: exploded file view ========== -->
+  <section class="section modes-sec" id="modes">
+    <div class="wrap">
+      <header class="sec-head center" data-reveal>
+        <p class="eyebrow">输出模式</p>
+        <h2 class="sec-title">OPPO 兼容，<br>还是 Apple 标准？</h2>
+        <p class="lead">两种模式都输出标准 HDR HEIC，与画质无关。打开文件看看，区别在于里面装了什么。</p>
+      </header>
+      <div class="mode-switch" data-reveal>
+        <div class="mseg" role="group" aria-label="选择输出模式">
+          <span class="mseg-ind" aria-hidden="true"></span>
+          <button type="button" data-mode="oppo" aria-pressed="true">OPPO 兼容</button>
+          <button type="button" data-mode="apple" aria-pressed="false">Apple 标准</button>
+        </div>
+        <div class="mode-desc">
+          <p data-mode="oppo" class="on">继续在 OPPO、一加、realme 图库里管理和编辑。</p>
+          <p data-mode="apple">交给 Apple 照片，还能写入摄影风格与人像数据。<sup><a class="fn-ref" href="#fn-4">4</a></sup></p>
+        </div>
+      </div>
+      <div class="xstage" id="xstage" data-mode="oppo">
+        <div class="xviz">
+          <div class="xglow oppo" aria-hidden="true"></div><div class="xglow apple" aria-hidden="true"></div>
+          <span class="xfile" aria-hidden="true">IMG_0421.HEIC</span>
+          <div class="iso" aria-hidden="true">
+            <div class="ly ly-base" data-k="base" style="--idx:0"><img data-scene="hdr" alt=""></div>
+            <div class="ly ly-gain" data-k="gain" style="--idx:1"><img data-scene="gain" alt=""></div>
+            <div class="ly ly-exif" data-k="exif" style="--idx:2"></div>
+            <div class="ly ly-mark" data-k="mark" style="--idx:3"></div>
+            <div class="ly ly-extras" data-k="extras" style="--idx:4"></div>
+            <div class="ly ly-trailer" data-k="trailer" style="--idx:5"></div>
+            <div class="ly ly-style out" data-k="style" style="--idx:6"></div>
+            <div class="ly ly-portrait out" data-k="portrait" style="--idx:6"></div>
+          </div>
+          <p class="xdest" aria-hidden="true"><span data-mode="oppo">适合 OPPO / 一加 / realme 图库</span><span data-mode="apple">适合 Apple 照片</span></p>
+        </div>
+        <ul class="xlabels" aria-label="文件里包含的内容">
+          <li class="lb" data-k="base" style="--idx:0;--c:#ffb36b"><b>主图</b><span>HDR 照片本身</span></li>
+          <li class="lb" data-k="gain" style="--idx:1;--c:#a1a1a6"><b>增益图</b><span>ISO 21496-1 · tmap</span></li>
+          <li class="lb" data-k="exif" style="--idx:2;--c:#d2d2d7"><b>Exif</b><span>拍摄参数与时间</span></li>
+          <li class="lb" data-k="mark" style="--idx:3;--c:var(--mc)"><b data-oppo="OPPO 兼容标记" data-apple="标准 ISO HDR 标记">OPPO 兼容标记</b><span data-oppo="OPPO 相册优先识别 HDR" data-apple="移除 OPPO 标记">OPPO 相册优先识别 HDR</span></li>
+          <li class="lb" data-k="extras" style="--idx:4;--c:#c7c7cc"><b>相机附加信息</b><span>可按设置完整保留</span></li>
+          <li class="lb" data-k="trailer" style="--idx:5;--c:#3fd0b8"><b>OPPO 私有尾部数据</b><span>在原机继续编辑所需</span></li>
+          <li class="lb out" data-k="style" style="--idx:6;--c:#d07a4c" aria-hidden="true"><b>摄影风格编辑数据</b><span>在 Apple 照片里继续调整</span></li>
+          <li class="lb out" data-k="portrait" style="--idx:6;--c:#f5f5f7" aria-hidden="true"><b>人像数据</b><span>视差图与主体蒙版，按照片条件写入</span></li>
+        </ul>
+      </div>
+      <p class="modes-foot" data-reveal>想在两台手机之间来回编辑？<a class="more" href="#roundtrip">了解往返工作流 ›</a></p>
+    </div>
+  </section>
+
+  <!-- ========== round trip (light, white) ========== -->
+  <section class="section light white" id="roundtrip">
+    <div class="wrap">
+      <header class="sec-head" data-reveal>
+        <p class="eyebrow">往返工作流</p>
+        <h2 class="sec-title">一帧影像，<br>动用两台手机。</h2>
+        <p class="lead">用 OPPO 拍摄，在 iPhone 上编辑，再把照片带回 OPPO。XDRemux 在两端之间转换，并把原机信息恢复回去。</p>
+      </header>
+    </div>
+    <div class="gallery" id="gallery" tabindex="0" aria-label="往返工作流，可横向滚动" data-reveal>
+      <ol class="g-track">
+        <li class="g-card" data-from="0" data-to="1" style="--rc:var(--teal);--g:rgba(10,138,118,.16)">
+          <div class="g-viz" aria-hidden="true"></div>
+          <div class="g-body"><p class="g-n">第 1 步</p><p class="tt"><strong>生成编辑副本。</strong>保留 OPPO 原始照片，生成一份 Apple 照片编辑副本。</p></div>
+        </li>
+        <li class="g-card" data-from="1" data-to="2" style="--rc:var(--blue);--g:rgba(40,86,215,.14)">
+          <div class="g-viz" aria-hidden="true"></div>
+          <div class="g-body"><p class="g-n">第 2 步</p><p class="tt"><strong>在 iPhone 上调整。</strong>把副本发送到 iPhone，在 Apple 照片里调整摄影风格或人像效果。</p></div>
+        </li>
+        <li class="g-card" data-from="2" data-to="1" style="--rc:var(--blue);--g:rgba(40,86,215,.14)">
+          <div class="g-viz" aria-hidden="true"></div>
+          <div class="g-body"><p class="g-n">第 3 步</p><p class="tt"><strong>回传并配对原图。</strong>把编辑后的照片传回 XDRemux，与原始照片配对。</p></div>
+        </li>
+        <li class="g-card" data-from="1" data-to="0" style="--rc:var(--teal);--g:rgba(10,138,118,.16)">
+          <div class="g-viz" aria-hidden="true"></div>
+          <div class="g-body"><p class="g-n">第 4 步</p><p class="tt"><strong>恢复并导出。</strong>按需恢复原机水印、OPPO 元数据和私有尾部数据，再选择输出模式。</p></div>
+        </li>
+      </ol>
+    </div>
+    <div class="wrap">
+      <div class="g-foot">
+        <p>原图是恢复信息的依据，请不要只保留编辑副本。<sup><a class="fn-ref" href="#fn-9">9</a></sup></p>
+        <div class="g-nav">
+          <button type="button" id="gPrev" aria-label="上一步"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m14.5 6-6 6 6 6"/></svg></button>
+          <button type="button" id="gNext" aria-label="下一步"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== app (light) ========== -->
+  <section class="section light" id="app">
+    <div class="wrap">
+      <header class="sec-head center" data-reveal>
+        <h2 class="sec-title">从导入到导出。</h2>
+        <p class="lead">转换队列是主要入口。手机上是紧凑队列和底部操作栏，电脑上有更宽的队列与详情布局。</p>
+      </header>
+      <div class="seg-wrap" data-reveal>
+        <div class="seg" role="tablist" aria-label="平台截图">
+          <span class="seg-ind" aria-hidden="true"></span>
+          <button type="button" role="tab" id="tab-windows" aria-selected="true" aria-controls="screens" data-shot="windows">Windows</button>
+          <button type="button" role="tab" id="tab-macos" aria-selected="false" aria-controls="screens" data-shot="macos" tabindex="-1">macOS</button>
+          <button type="button" role="tab" id="tab-android" aria-selected="false" aria-controls="screens" data-shot="android" tabindex="-1">Android</button>
+          <button type="button" role="tab" id="tab-ios" aria-selected="false" aria-controls="screens" data-shot="ios" tabindex="-1">iOS</button>
+        </div>
+      </div>
+      <div class="screens" id="screens" role="tabpanel" aria-labelledby="tab-windows" data-reveal>
+        <figure class="screen on" data-shot="windows"><img src="assets/windows.webp" width="1600" height="901" alt="XDRemux Windows 版主界面"></figure>
+        <figure class="screen" data-shot="macos" aria-hidden="true"><img src="assets/macos.webp" width="1400" height="1142" alt="XDRemux macOS 版主界面" loading="lazy"></figure>
+        <figure class="screen" data-shot="android" aria-hidden="true"><div class="phone-frame"><img src="assets/android.webp" width="720" height="1584" alt="XDRemux Android 版主界面" loading="lazy"></div></figure>
+        <figure class="screen" data-shot="ios" aria-hidden="true"><div class="phone-frame"><img src="assets/ios.webp" width="720" height="1558" alt="XDRemux iOS 版主界面" loading="lazy"></div></figure>
+      </div>
+      <p class="screen-cap"><span id="shotCap">支持原生拖放，HEIC 队列预览使用系统 WIC。</span>截图来自 0.3 版本。</p>
+      <ol class="flow5">
+        <li data-reveal><span class="n">1</span><h3>添加照片</h3><p>用系统选择器导入 HEIC、HEIF 或 JPEG，也可以分享或拖放添加。</p></li>
+        <li data-reveal style="--d:.08s"><span class="n">2</span><h3>查看详情</h3><p>检查格式、尺寸、EXIF、HDR 类型、拍摄模式与动态照片信息。</p></li>
+        <li data-reveal style="--d:.16s"><span class="n">3</span><h3>选择转换方式</h3><p>选择输出模式，按需开启摄影风格、人像或动态照片处理。</p></li>
+        <li data-reveal style="--d:.24s"><span class="n">4</span><h3>开始转换</h3><p>在队列里查看进度。失败项目可以重试，或调整设置后重新转换。</p></li>
+        <li data-reveal style="--d:.32s"><span class="n">5</span><h3>导出结果</h3><p>电脑上写入输出目录；手机上保存静帧到图库，或分享文件。</p></li>
+      </ol>
+      <p class="extras">支持中文与英文界面。</p>
+    </div>
+  </section>
+
+  <!-- ========== compare + download (light, white) ========== -->
+  <section class="section light white" id="download">
+    <div class="wrap">
+      <header class="sec-head center" data-reveal>
+        <h2 class="sec-title">哪个版本适合你？</h2>
+        <p class="lead">XDRemux <span data-version>v0.4.3</span>，免费下载。</p>
+      </header>
+      <div class="cmp-scroll" data-reveal>
+        <ul class="cmp">
+          <li class="cmp-col" data-platform="windows">
+            <svg class="cmp-ico" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="11" y="13" width="38" height="26" rx="3"/><path d="M5 44h50l-3 4H8Z"/></svg>
+            <div class="cmp-tags"></div>
+            <h3>Windows</h3>
+            <p class="cmp-kind">x64 · Setup.exe</p>
+            <a class="btn btn-md" data-asset="windows" href="https://github.com/BeetMan/XDRemux-Flutter/releases/download/v0.4.3/XDRemux-Windows-0.4.3-Setup.exe" target="_blank" rel="noopener">下载</a>
+            <p class="cf"><span>安装</span>运行安装器，无需另装 ffmpeg</p>
+            <p class="cf"><span>导入</span>拖放或选择文件</p>
+            <p class="cf"><span>长时间任务</span>最小化到托盘继续转换</p>
+          </li>
+          <li class="cmp-col" data-platform="macos">
+            <svg class="cmp-ico" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="11" y="13" width="38" height="26" rx="3"/><path d="M5 44h50l-3 4H8Z"/></svg>
+            <div class="cmp-tags"></div>
+            <h3>macOS</h3>
+            <p class="cmp-kind">DMG</p>
+            <a class="btn btn-md" data-asset="macos" href="https://github.com/BeetMan/XDRemux-Flutter/releases/download/v0.4.3/XDRemux-macOS-0.4.3.dmg" target="_blank" rel="noopener">下载</a>
+            <p class="cf"><span>安装</span>拖入「应用程序」</p>
+            <p class="cf"><span>导入</span>选择文件</p>
+            <p class="cf"><span>导出</span>写入输出目录</p>
+          </li>
+          <li class="cmp-col" data-platform="android">
+            <svg class="cmp-ico" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="19" y="7" width="22" height="46" rx="5"/><path d="M27 11h6"/></svg>
+            <div class="cmp-tags"></div>
+            <h3>Android</h3>
+            <p class="cmp-kind">APK</p>
+            <a class="btn btn-md" data-asset="android" href="https://github.com/BeetMan/XDRemux-Flutter/releases/download/v0.4.3/XDRemux-Android-0.4.3.apk" target="_blank" rel="noopener">下载</a>
+            <p class="cf"><span>安装</span>安装 APK</p>
+            <p class="cf"><span>导入</span>选择器或分享接收</p>
+            <p class="cf"><span>长时间任务</span>前台服务后台转换</p>
+          </li>
+          <li class="cmp-col" data-platform="ios">
+            <svg class="cmp-ico" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="19" y="7" width="22" height="46" rx="6"/><path d="M27 11h6"/></svg>
+            <div class="cmp-tags"><span class="tag tag-unsigned">未签名</span></div>
+            <h3>iOS</h3>
+            <p class="cmp-kind">IPA</p>
+            <a class="btn btn-md" data-asset="ios" href="https://github.com/BeetMan/XDRemux-Flutter/releases/download/v0.4.3/XDRemux-iOS-0.4.3-unsigned.ipa" target="_blank" rel="noopener">下载</a>
+            <p class="cf"><span>安装</span>自行签名后侧载<sup><a class="fn-ref" href="#fn-1">1</a></sup></p>
+            <p class="cf"><span>导入</span>相册、文件与分享扩展</p>
+            <p class="cf"><span>导出</span>保存到相册或分享</p>
+          </li>
+          <li class="cmp-col" data-platform="harmony">
+            <svg class="cmp-ico" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="19" y="7" width="22" height="46" rx="5"/><path d="M27 11h6"/></svg>
+            <div class="cmp-tags"><span class="tag tag-unsigned">未签名</span></div>
+            <h3>HarmonyOS</h3>
+            <p class="cmp-kind">Flutter · HAP</p>
+            <a class="btn btn-md" data-asset="harmony" href="https://github.com/BeetMan/XDRemux-Flutter/releases/download/v0.4.3/XDRemux-HarmonyOS-0.4.3-unsigned.hap" target="_blank" rel="noopener">下载</a>
+            <p class="cf"><span>安装</span>DevEco Studio 本地签名<sup><a class="fn-ref" href="#fn-1">1</a></sup></p>
+            <p class="cf"><span>导入</span>系统选择器或分享</p>
+            <p class="cf"><span>导出</span>保存到图库或分享</p>
+          </li>
+          <li class="cmp-col" data-platform="harmonyNative">
+            <svg class="cmp-ico" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="19" y="7" width="22" height="46" rx="5"/><path d="M27 11h6M25 24h10v10H25Z"/></svg>
+            <div class="cmp-tags"><span class="tag tag-unsigned">未签名</span><span class="tag tag-preview">预览版</span></div>
+            <h3>HarmonyOS 原生</h3>
+            <p class="cmp-kind">ArkUI · <span data-native-version>0.5.0-alpha1</span></p>
+            <a class="btn btn-md" data-asset="harmonyNative" href="https://github.com/BeetMan/XDRemux-Flutter/releases/download/v0.4.3/XDRemux-HarmonyOS-Native-0.5.0-alpha1-unsigned.hap" target="_blank" rel="noopener">下载</a>
+            <p class="cf"><span>安装</span>本地签名后安装</p>
+            <p class="cf"><span>界面</span>ArkTS / ArkUI 原生实现</p>
+            <p class="cf"><span>共存</span>独立包名，可与 Flutter 版共存</p>
+          </li>
+        </ul>
+      </div>
+      <div class="dl-more">
+        <span>暂不提供 Windows ARM64 安装包和 Linux 桌面版。</span>
+        <a class="more" href="https://github.com/BeetMan/XDRemux-Flutter/releases" target="_blank" rel="noopener">全部版本 ›</a>
+        <a class="more" href="https://github.com/BeetMan/XDRemux-Flutter/blob/feat/harmony-native/README.md" target="_blank" rel="noopener">鸿蒙原生版说明 ›</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ========== footnotes + footer ========== -->
+<div class="light">
+  <section class="fnotes" aria-label="脚注">
+    <div class="wrap">
+      <ol>
+        <li id="fn-1">iOS 与 HarmonyOS 安装包未签名，不能像商店应用一样直接安装。iOS 版未通过 App Store / TestFlight 分发；HarmonyOS 请通过 DevEco Studio 配置本地签名。</li>
+        <li id="fn-2">ProXDR 转换支持 LHDR / UHDR 容器。选择器接受 HEIC / HEIF / JPEG，但扩展名正确不代表能完成所有转换，能力取决于照片内部结构。纯 Rust 解码暂不支持 4:2:2 / 4:4:4 HEVC，部分 iPhone HEIC 截图可能失败。</li>
+        <li id="fn-3">HDR 能否显示、图库是否允许继续编辑，取决于目标应用与设备。OPPO 图库对兼容文件再次编辑后，HDR 增益图仍可能丢失。本页照片与界面效果为示意图，并非实拍或实际输出。</li>
+        <li id="fn-4">Apple 摄影风格、人像及 Live Photo 包含实验性实现，实际效果取决于原始照片结构、系统版本和目标设备。请保留原图，先用少量照片验证自己的工作流。</li>
+        <li id="fn-5">OPPO ProXDR 走 HDR 转换路径；其他普通照片走风格重建路径，输出 SDR + 风格，不保证保留原有增益图。普通照片的语义分区蒙版仍含占位实现，柔肤效果尚未完整实现；部分非 Standard 风格的调节参数尚未支持，效果不承诺与 Apple 原生逐像素一致。</li>
+        <li id="fn-6">人像转换只使用照片中真实存在且可读取的深度信息，不会从普通照片生成景深。人像效果通常需要在 Apple 照片中手动开启。缺少可用 <code>src.image</code> 时回退到 OPPO 主图，缺少受支持的深度数据则跳过人像转换。华为支持以现有 Mate 70 样片为依据，不代表所有华为机型与拍摄模式都已适配。</li>
+        <li id="fn-7">Live Photo 是两个文件，请把 HEIC 和 MOV 一起导入 Apple 照片。「保存图库」与单文件分享目前只处理静帧，不会自动创建系统 Live Photo 资产；实况播放与声音仍需在目标设备上验证。支持 Android V1 / legacy MicroVideo、HEIF <code>mpvd</code>、OPPO LPEX 与已验证的华为追加视频结构。</li>
+        <li id="fn-8">华为照片的识别、风格、人像与动态照片处理共用 Rust 管线，但共用逻辑不等于所有设备都已完成真机验收。XMAGE <code>xtstyle</code> 目前用于只读诊断，尚未映射到 Apple 摄影风格。</li>
+        <li id="fn-9">往返工作流依靠原始照片恢复原机水印、OPPO 元数据和私有尾部数据。恢复原机水印为可选项，不勾选时保留 iPhone 回传画面。</li>
+      </ol>
+      <div class="fn-extra">
+        <p>尽量导入未经社交软件压缩或图库重编码的原文件，私有尾部、深度或动态资源可能在转存时丢失。设备兼容性按样片逐步验证，已有样片通过不代表整个平台或品牌都已适配，详见<a href="https://github.com/BeetMan/XDRemux-Flutter/blob/main/docs/validation/device-compat-matrix.md" target="_blank" rel="noopener">设备兼容矩阵</a>。</p>
+        <p>反馈问题时，请在 <a href="https://github.com/BeetMan/XDRemux-Flutter/issues" target="_blank" rel="noopener">GitHub Issues</a> 附上平台、设备型号、系统与应用版本、转换选项、错误信息和可复现的原始样片。照片可能包含位置等隐私信息，分享前请确认授权范围。</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="页面位置"><img src="assets/icon.png" alt="" width="18" height="18"><span>›</span>XDRemux</nav>
+      <div class="foot-grid">
+        <div class="foot-about">
+          <h4>关于</h4>
+          <p>基于 21Z121Z1/XDRemux 的研究与原版 Swift / Python 实现移植。感谢上游作者，以及提供样片、验证与反馈的贡献者。</p>
+        </div>
+        <div>
+          <h4>文档</h4>
+          <ul>
+            <li><a href="https://github.com/BeetMan/XDRemux-Flutter/blob/main/docs/README.md" target="_blank" rel="noopener">技术文档索引</a></li>
+            <li><a href="https://github.com/BeetMan/XDRemux-Flutter/blob/main/docs/operations/building.md" target="_blank" rel="noopener">五平台构建指南</a></li>
+            <li><a href="https://github.com/BeetMan/XDRemux-Flutter/blob/main/docs/validation/device-compat-matrix.md" target="_blank" rel="noopener">设备兼容矩阵</a></li>
+            <li><a href="https://github.com/BeetMan/XDRemux-Flutter/blob/main/docs/testing/conformance-suite.md" target="_blank" rel="noopener">一致性测试</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>项目</h4>
+          <ul>
+            <li><a href="https://github.com/BeetMan/XDRemux-Flutter" target="_blank" rel="noopener">GitHub 仓库</a></li>
+            <li><a href="https://github.com/BeetMan/XDRemux-Flutter/releases" target="_blank" rel="noopener">版本发布</a></li>
+            <li><a href="https://github.com/BeetMan/XDRemux-Flutter/issues" target="_blank" rel="noopener">问题反馈</a></li>
+            <li><a href="https://github.com/21Z121Z1/XDRemux" target="_blank" rel="noopener">上游项目</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="legal">
+        <p>MIT License · © 2026 BeetMan。第三方组件遵循各自许可证。</p>
+        <p>Apple 私有框架相关路径用于 macOS / iOS 侧载研究，不用于 App Store 分发。OPPO、一加、realme、华为、Apple、iPhone、Mac 等名称归各自所有者，本项目与这些公司无关联。</p>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const $$ = s => [...document.querySelectorAll(s)];
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const smooth = (a, b, v) => { const t = clamp((v - a) / (b - a)); return t * t * (3 - 2 * t); };
+  const lerp = (a, b, t) => a + (b - a) * t;
+
+  /* ---------- release links ---------- */
+  const REPO = 'BeetMan/XDRemux-Flutter';
+  const RELEASE = {
+    tag: 'v0.4.3',
+    version: '0.4.3',
+    nativeVersion: '0.5.0-alpha1',
+    files: {
+      windows: 'XDRemux-Windows-0.4.3-Setup.exe',
+      macos: 'XDRemux-macOS-0.4.3.dmg',
+      android: 'XDRemux-Android-0.4.3.apk',
+      ios: 'XDRemux-iOS-0.4.3-unsigned.ipa',
+      harmony: 'XDRemux-HarmonyOS-0.4.3-unsigned.hap',
+      harmonyNative: 'XDRemux-HarmonyOS-Native-0.5.0-alpha1-unsigned.hap'
+    }
+  };
+  const PATTERNS = {
+    windows: /^XDRemux-Windows-[\d.]+-Setup\.exe$/,
+    macos: /^XDRemux-macOS-[\d.]+\.dmg$/,
+    android: /^XDRemux-Android-[\d.]+\.apk$/,
+    ios: /^XDRemux-iOS-[\d.]+-unsigned\.ipa$/,
+    harmony: /^XDRemux-HarmonyOS-[\d.]+-unsigned\.hap$/,
+    harmonyNative: /^XDRemux-HarmonyOS-Native-(.+)-unsigned\.hap$/
+  };
+  const NAMES = { windows: 'Windows', macos: 'macOS', android: 'Android', ios: 'iOS', harmony: 'HarmonyOS' };
+  const fallbackUrl = key => `https://github.com/${REPO}/releases/download/${RELEASE.tag}/${RELEASE.files[key]}`;
+
+  function detectPlatform() {
+    const ua = navigator.userAgent || '';
+    const plat = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '';
+    if (/OpenHarmony|ArkWeb/i.test(ua)) return 'harmony';
+    if (/Android/i.test(ua)) return 'android';
+    if (/iPhone|iPad|iPod/i.test(ua) || (/Mac/i.test(plat) && navigator.maxTouchPoints > 1)) return 'ios';
+    if (/Mac/i.test(plat) || /Mac OS X/i.test(ua)) return 'macos';
+    if (/Win/i.test(plat) || /Windows/i.test(ua)) return 'windows';
+    return null;
+  }
+  const here = detectPlatform();
+
+  function render(rel) {
+    const url = key => (rel.urls && rel.urls[key]) || fallbackUrl(key);
+    $$('[data-version]').forEach(el => { el.textContent = 'v' + rel.version; });
+    $$('[data-native-version]').forEach(el => { el.textContent = rel.nativeVersion; });
+    $$('[data-asset]').forEach(a => { a.href = url(a.dataset.asset); });
+    if (here) {
+      const cta = $('#heroCta');
+      cta.href = url(here);
+      cta.target = '_blank';
+      cta.rel = 'noopener';
+      cta.textContent = `下载 ${NAMES[here]} 版`;
+    }
+  }
+  if (here) {
+    const col = $(`.cmp-col[data-platform="${here}"]`);
+    if (col) {
+      col.classList.add('here');
+      const tag = document.createElement('span');
+      tag.className = 'tag tag-here';
+      tag.textContent = '当前设备';
+      col.querySelector('.cmp-tags').prepend(tag);
+    }
+  }
+  render(RELEASE);
+
+  // 发布新版本后自动换成最新安装包；请求失败时保留上面的固定链接。
+  fetch(`https://api.github.com/repos/${REPO}/releases/latest`, { headers: { Accept: 'application/vnd.github+json' } })
+    .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
+    .then(data => {
+      const rel = { version: String(data.tag_name || '').replace(/^v/, ''), nativeVersion: RELEASE.nativeVersion, urls: {} };
+      for (const asset of data.assets || []) {
+        for (const [key, re] of Object.entries(PATTERNS)) {
+          const m = asset.name.match(re);
+          if (!m) continue;
+          rel.urls[key] = asset.browser_download_url;
+          if (key === 'harmonyNative') rel.nativeVersion = m[1];
+        }
+      }
+      if (rel.version && ['windows', 'macos', 'android'].every(k => rel.urls[k])) render(rel);
+    })
+    .catch(() => {});
+
+  /* ---------- procedural scene: SDR 底图 / 增益图 / HDR ---------- */
+  function mulberry(seed) {
+    return () => {
+      seed = (seed + 0x6D2B79F5) | 0;
+      let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  const rgba = (hex, a) => {
+    const n = parseInt(hex.slice(1), 16);
+    return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
+  };
+  const PAL = {
+    hdr: { sky: ['#050c22', '#23306a', '#b8506e', '#ff9a5c', '#ffd29a'], sea: ['#2a2140', '#05070f'], sun: '#fffdf6', halo: '#ffc882', haloK: 1, haloR: .55, glint: '#fff1cc', glintK: 1, win: '#ffcf73', winGlow: 10, city: '#04060b', hill: '#0b0e1d', cloud: '#3c285a', cloudLit: '#ff966e', vignette: .45, blend: 'lighter' },
+    sdr: { sky: ['#2a3350', '#4f5680', '#a88290', '#d9b7a6', '#e8d6c4'], sea: ['#5f5868', '#262a37'], sun: '#ece4d8', halo: '#e6d6c4', haloK: .55, haloR: .32, glint: '#cfc6b8', glintK: .55, win: '#a49478', winGlow: 0, city: '#1d2129', hill: '#262a38', cloud: '#5f5f78', cloudLit: '#cdb4aa', vignette: .12, blend: 'source-over' },
+    gain: { sky: ['#000000', '#0a0a0a', '#2a2a2a', '#5c5c5c', '#9a9a9a'], sea: ['#1c1c1c', '#000000'], sun: '#ffffff', halo: '#ffffff', haloK: .9, haloR: .5, glint: '#ffffff', glintK: 1, win: '#e0e0e0', winGlow: 0, city: '#000000', hill: '#000000', cloud: '#141414', cloudLit: '#969696', vignette: 0, blend: 'source-over' }
+  };
+  const geom = (w, h) => ({ hz: Math.round(h * .62), sx: w * .67, sr: Math.max(6, Math.min(h, w * .9) * .05) });
+
+  function drawScene(ctx, w, h, mode) {
+    const P = PAL[mode];
+    const R = mulberry(7); // 同一种子：三种渲染的几何完全一致
+    const { hz, sx, sr } = geom(w, h);
+    const sy = hz - h * .07;
+    ctx.save();
+
+    let g = ctx.createLinearGradient(0, 0, 0, hz);
+    [0, .38, .72, .9, 1].forEach((s, i) => g.addColorStop(s, P.sky[i]));
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, w, hz + 1);
+
+    g = ctx.createRadialGradient(sx, sy, 0, sx, sy, Math.min(h, w) * P.haloR);
+    g.addColorStop(0, rgba(P.halo, .9 * P.haloK));
+    g.addColorStop(.12, rgba(P.halo, .5 * P.haloK));
+    g.addColorStop(.4, rgba(P.halo, .15 * P.haloK));
+    g.addColorStop(1, rgba(P.halo, 0));
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, w, hz);
+
+    for (let i = 0; i < 7; i++) {
+      const cy = hz - h * (.1 + i * .045 + R() * .02);
+      const cx = w * (.1 + R() * .9), cw = w * (.18 + R() * .3), ch = h * (.008 + R() * .012);
+      const near = Math.max(0, 1 - Math.hypot(cx - sx, cy - sy) / (w * .6));
+      const lg = ctx.createLinearGradient(0, cy - ch, 0, cy + ch);
+      lg.addColorStop(0, rgba(P.cloud, .55));
+      lg.addColorStop(1, rgba(P.cloudLit, .25 + .6 * near));
+      ctx.fillStyle = lg;
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, cw / 2, ch, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    ctx.save();
+    if (mode === 'hdr') { ctx.shadowColor = 'rgba(255,236,190,1)'; ctx.shadowBlur = sr * 1.6; }
+    ctx.fillStyle = P.sun;
+    ctx.beginPath();
+    ctx.arc(sx, sy, sr, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    ctx.fillStyle = P.hill;
+    ctx.beginPath();
+    ctx.moveTo(w * .5, hz);
+    [[.56, .012], [.62, .03], [.7, .018], [.78, .05], [.86, .035], [.93, .065], [1, .045]].forEach(([x, y]) => ctx.lineTo(w * x, hz - h * y));
+    ctx.lineTo(w, hz);
+    ctx.closePath();
+    ctx.fill();
+
+    const wins = [];
+    const unit = Math.min(w, h * 1.6);
+    let x = -w * .01;
+    while (x < w * .46) {
+      const bw = unit * (.022 + R() * .03);
+      const t = 1 - x / (w * .46);
+      const bh = h * (.035 + R() * .06 + t * .14 * R());
+      ctx.fillStyle = P.city;
+      ctx.fillRect(x, hz - bh, bw - Math.max(1, unit * .001), bh + 1);
+      const ws = Math.max(1.5, unit * .0032), gap = ws * 2.2;
+      for (let wy = hz - bh + gap; wy < hz - gap; wy += gap) {
+        for (let wx = x + gap * .7; wx < x + bw - gap * .7; wx += gap) {
+          if (R() < .28) wins.push([wx, wy, ws]);
+        }
+      }
+      x += bw;
+    }
+    ctx.save();
+    ctx.fillStyle = P.win;
+    if (P.winGlow) { ctx.shadowColor = P.win; ctx.shadowBlur = P.winGlow * (unit / 1000); }
+    for (const [wx, wy, ws] of wins) ctx.fillRect(wx, wy, ws, ws * 1.3);
+    ctx.restore();
+
+    g = ctx.createLinearGradient(0, hz, 0, h);
+    g.addColorStop(0, P.sea[0]);
+    g.addColorStop(1, P.sea[1]);
+    ctx.fillStyle = g;
+    ctx.fillRect(0, hz, w, h - hz);
+    g = ctx.createLinearGradient(0, hz, 0, hz + h * .14);
+    g.addColorStop(0, rgba(P.sky[3], .4));
+    g.addColorStop(1, rgba(P.sky[3], 0));
+    ctx.fillStyle = g;
+    ctx.fillRect(0, hz, w, h * .14);
+
+    ctx.save();
+    ctx.globalCompositeOperation = P.blend;
+    ctx.fillStyle = P.glint;
+    for (let i = 0; i < 160; i++) {
+      const t = Math.pow(R(), 1.4);
+      const y = hz + 2 + t * (h - hz - 4);
+      const spread = sr * (.5 + t * 3.2);
+      const cx = sx + (R() - .5) * spread * 1.4;
+      const len = spread * (.2 + R() * .6);
+      ctx.globalAlpha = Math.min(1, (1 - t * .75) * P.glintK * (.35 + R() * .65));
+      ctx.fillRect(cx - len / 2, y, len, Math.max(1, h * .0025 * (.6 + t)));
+    }
+    ctx.restore();
+
+    ctx.save();
+    ctx.globalAlpha = mode === 'sdr' ? .18 : .3;
+    ctx.fillStyle = P.win;
+    for (let i = 0; i < wins.length; i += 3) {
+      const [wx, , ws] = wins[i];
+      ctx.fillRect(wx, hz + 3 + R() * h * .12, ws, ws * .6);
+    }
+    ctx.restore();
+
+    if (P.vignette) {
+      g = ctx.createRadialGradient(w * .55, h * .5, Math.min(w, h) * .2, w * .55, h * .5, Math.max(w, h) * .8);
+      g.addColorStop(0, 'rgba(0,0,0,0)');
+      g.addColorStop(1, `rgba(0,0,0,${P.vignette})`);
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, w, h);
+    }
+    if (mode === 'sdr') { ctx.fillStyle = 'rgba(150,150,165,.08)'; ctx.fillRect(0, 0, w, h); }
+    ctx.restore();
+  }
+
+  /* ---------- shared scene images (one render per mode, reused everywhere) ---------- */
+  function renderScenes() {
+    const W = 1920, H = 1200;
+    const c = document.createElement('canvas');
+    c.width = W;
+    c.height = H;
+    const ctx = c.getContext('2d');
+    let chain = Promise.resolve();
+    for (const mode of ['hdr', 'sdr', 'gain']) {
+      chain = chain.then(() => new Promise(done => {
+        drawScene(ctx, W, H, mode);
+        const apply = src => { $$(`img[data-scene="${mode}"]`).forEach(img => { img.src = src; }); done(); };
+        if (c.toBlob) c.toBlob(b => apply(b ? URL.createObjectURL(b) : c.toDataURL('image/jpeg', .9)), 'image/jpeg', .9);
+        else apply(c.toDataURL('image/jpeg', .9));
+      }));
+    }
+  }
+
+  function makeNoise() {
+    const n = document.createElement('canvas');
+    n.width = n.height = 180;
+    const x = n.getContext('2d');
+    const d = x.createImageData(180, 180);
+    for (let i = 0; i < d.data.length; i += 4) {
+      const v = Math.random() * 255;
+      d.data[i] = d.data[i + 1] = d.data[i + 2] = v;
+      d.data[i + 3] = 255;
+    }
+    x.putImageData(d, 0, 0);
+    return n.toDataURL('image/png');
+  }
+
+  /* ---------- hero: HDR photo with live glints ---------- */
+  const heroMedia = $('#heroMedia'), heroBase = $('#heroBase'), heroGl = $('#heroGlints'), heroBtn = $('#heroPlay');
+  let heroSize = [0, 0], sparks = [], heroPlaying = !reduce, heroVisible = true, heroRaf = 0, heroLast = 0;
+  function buildSparks(w, h) {
+    const R = mulberry(21);
+    const { hz, sx, sr } = geom(w, h);
+    sparks = [];
+    for (let i = 0; i < 90; i++) {
+      const t = Math.pow(R(), 1.3);
+      const spread = sr * (.5 + t * 3.2);
+      sparks.push({
+        x: sx + (R() - .5) * spread * 1.4,
+        y: hz + 2 + t * (h - hz - 4),
+        len: spread * (.12 + R() * .35),
+        th: Math.max(1, h * .0026 * (.6 + t)),
+        ph: R() * 6.283,
+        sp: .8 + R() * 2.2,
+        k: 1 - t * .7
+      });
+    }
+  }
+  function drawGlints(now) {
+    const ctx = heroGl.getContext('2d');
+    const [w, h] = heroSize;
+    ctx.clearRect(0, 0, w, h);
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.fillStyle = '#fff4d8';
+    const s = now / 1000;
+    for (const p of sparks) {
+      const a = Math.pow(Math.max(0, Math.sin(s * p.sp + p.ph)), 4) * p.k;
+      if (a < .02) continue;
+      ctx.globalAlpha = a;
+      ctx.fillRect(p.x - p.len / 2, p.y, p.len, p.th);
+    }
+    ctx.globalAlpha = 1;
+  }
+  function sizeHero() {
+    const cw = heroMedia.clientWidth, ch = heroMedia.clientHeight;
+    if (!cw || !ch) return;
+    const k = Math.min(window.devicePixelRatio || 1, 1.5, Math.sqrt(3.2e6 / (cw * ch)));
+    const w = Math.round(cw * k), h = Math.round(ch * k);
+    if (w === heroSize[0] && h === heroSize[1]) return;
+    heroSize = [w, h];
+    heroBase.width = heroGl.width = w;
+    heroBase.height = heroGl.height = h;
+    drawScene(heroBase.getContext('2d'), w, h, 'hdr');
+    buildSparks(w, h);
+    drawGlints(performance.now());
+  }
+  function heroLoop(now) {
+    heroRaf = 0;
+    if (!heroPlaying || !heroVisible) return;
+    if (now - heroLast > 33) { drawGlints(now); heroLast = now; }
+    heroRaf = requestAnimationFrame(heroLoop);
+  }
+  const heroKick = () => { if (!heroRaf && heroPlaying && heroVisible) heroRaf = requestAnimationFrame(heroLoop); };
+  function setHeroBtn() {
+    heroBtn.classList.toggle('paused', !heroPlaying);
+    heroBtn.setAttribute('aria-label', heroPlaying ? '暂停动画' : '播放动画');
+  }
+  heroBtn.addEventListener('click', () => { heroPlaying = !heroPlaying; setHeroBtn(); heroKick(); });
+  new ResizeObserver(sizeHero).observe(heroMedia);
+  new IntersectionObserver(([en]) => { heroVisible = en.isIntersecting; heroKick(); }).observe(heroMedia);
+  sizeHero();
+  setHeroBtn();
+  heroKick();
+
+  setTimeout(() => {
+    renderScenes();
+    $('#styleBox').style.setProperty('--noise', `url(${makeNoise()})`);
+  }, 30);
+
+  /* ---------- highlights carousel ---------- */
+  const hlScroller = $('#hlScroller'), hlTrack = hlScroller.querySelector('.hl-track');
+  const hlCards = $$('.hl-card'), hlDots = $$('.hl-dots .dot'), hlBtn = $('#hlPlay');
+  const HL_DUR = 5200;
+  let hlIdx = 0, hlPlaying = !reduce, hlEnded = false, hlInView = false, hlElapsed = 0, hlLast = 0, hlRaf = 0;
+  let hlAuto = false, hlAutoT = 0, hlScrollT = 0;
+  const hlEdge = () => parseFloat(getComputedStyle(hlTrack).paddingLeft) || 0;
+  function hlPaint() {
+    hlDots.forEach((d, k) => {
+      const f = d.querySelector('.fill');
+      f.style.width = k !== hlIdx ? '0%' : (hlPlaying ? clamp(hlElapsed / HL_DUR) * 100 : 100) + '%';
+    });
+  }
+  function hlSetActive(i) {
+    hlIdx = i;
+    hlElapsed = 0;
+    hlCards.forEach((c, k) => c.classList.toggle('active', k === i));
+    hlDots.forEach((d, k) => {
+      d.classList.toggle('on', k === i);
+      if (k === i) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current');
+    });
+    hlPaint();
+  }
+  function hlGo(i) {
+    hlAuto = true;
+    clearTimeout(hlAutoT);
+    hlAutoT = setTimeout(() => { hlAuto = false; }, 1200);
+    hlScroller.scrollTo({ left: hlCards[i].offsetLeft - hlEdge(), behavior: reduce ? 'auto' : 'smooth' });
+    hlSetActive(i);
+  }
+  function hlSetBtn() {
+    hlBtn.classList.toggle('paused', !hlPlaying && !hlEnded);
+    hlBtn.classList.toggle('ended', hlEnded);
+    hlBtn.setAttribute('aria-label', hlEnded ? '重新播放' : hlPlaying ? '暂停' : '播放');
+  }
+  function hlLoop(now) {
+    hlRaf = 0;
+    if (!hlPlaying || !hlInView) return;
+    hlElapsed += hlLast ? Math.min(now - hlLast, 100) : 0;
+    hlLast = now;
+    if (hlElapsed >= HL_DUR) {
+      if (hlIdx < hlCards.length - 1) hlGo(hlIdx + 1);
+      else { hlPlaying = false; hlEnded = true; hlSetBtn(); hlPaint(); return; }
+    }
+    hlPaint();
+    hlRaf = requestAnimationFrame(hlLoop);
+  }
+  const hlKick = () => { if (!hlRaf && hlPlaying && hlInView) { hlLast = 0; hlRaf = requestAnimationFrame(hlLoop); } };
+  hlBtn.addEventListener('click', () => {
+    if (hlEnded) { hlEnded = false; hlPlaying = true; hlGo(0); }
+    else hlPlaying = !hlPlaying;
+    hlSetBtn();
+    hlPaint();
+    hlKick();
+  });
+  hlDots.forEach((d, k) => d.addEventListener('click', () => { hlEnded = false; hlGo(k); hlSetBtn(); hlKick(); }));
+  hlScroller.addEventListener('scroll', () => {
+    if (!hlAuto && hlPlaying) { hlPlaying = false; hlSetBtn(); hlPaint(); }
+    clearTimeout(hlScrollT);
+    hlScrollT = setTimeout(() => {
+      if (hlAuto) return;
+      const e = hlEdge();
+      let best = 0, bd = Infinity;
+      hlCards.forEach((c, k) => {
+        const d = Math.abs(c.offsetLeft - e - hlScroller.scrollLeft);
+        if (d < bd) { bd = d; best = k; }
+      });
+      if (best !== hlIdx) hlSetActive(best);
+    }, 140);
+  }, { passive: true });
+  hlScroller.addEventListener('scrollend', () => { hlAuto = false; });
+  new IntersectionObserver(([en]) => { hlInView = en.isIntersecting; hlKick(); }, { threshold: .35 }).observe(hlScroller);
+  hlSetActive(0);
+  hlSetBtn();
+
+  /* ---------- HDR sequence (sticky scroll) ---------- */
+  const seq = $('#seq'), frame = $('#seqFrame');
+  const caps = $$('.cap'), stepEls = $$('.seq-steps li');
+  function updateSeq(vh) {
+    const r = seq.getBoundingClientRect();
+    if (r.bottom < -vh || r.top > vh * 1.5) return;
+    const p = clamp(-r.top / Math.max(1, r.height - vh));
+    const enter = 1 - Math.pow(1 - clamp(1 - r.top / vh), 3);
+    frame.style.setProperty('--s', lerp(.84, 1, enter).toFixed(4));
+    frame.style.setProperty('--rad', lerp(32, 0, enter).toFixed(1) + 'px');
+    const wipe = smooth(.5, .76, p);
+    frame.style.setProperty('--gain', smooth(.2, .32, p).toFixed(3));
+    frame.style.setProperty('--wipe', (wipe * 100).toFixed(2) + '%');
+    frame.style.setProperty('--wipe-o', Math.min(1, wipe * 12, (1 - wipe) * 12).toFixed(3));
+    const o = [
+      1 - smooth(.17, .23, p),
+      smooth(.24, .3, p) * (1 - smooth(.44, .5, p)),
+      smooth(.5, .56, p) * (1 - smooth(.7, .76, p)),
+      smooth(.77, .83, p)
+    ];
+    caps.forEach((c, i) => c.style.setProperty('--o', o[i].toFixed(3)));
+    const active = p < .26 ? 0 : p < .62 ? 1 : 2;
+    stepEls.forEach((s, i) => s.classList.toggle('on', i === active));
+  }
+  if (reduce) frame.style.setProperty('--wipe', '100%');
+
+  /* ---------- light-up statement ---------- */
+  const lu = $('#lightup');
+  const chars = [];
+  const luSr = document.createElement('span');
+  luSr.className = 'sr';
+  luSr.textContent = lu.textContent;
+  const luVis = document.createElement('span');
+  luVis.setAttribute('aria-hidden', 'true');
+  while (lu.firstChild) luVis.appendChild(lu.firstChild);
+  (function split(node) {
+    for (const child of [...node.childNodes]) {
+      if (child.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        for (const ch of child.textContent) {
+          const s = document.createElement('span');
+          s.className = 'c';
+          s.textContent = ch;
+          frag.appendChild(s);
+          chars.push(s);
+        }
+        child.replaceWith(frag);
+      } else if (child.nodeType === 1) split(child);
+    }
+  })(luVis);
+  lu.append(luSr, luVis);
+  lu.classList.add('js');
+  let litN = 0;
+  function updateLightup(vh) {
+    const r = lu.getBoundingClientRect();
+    const p = reduce ? 1 : clamp((vh * .85 - r.top) / (r.height + vh * .35));
+    const n = Math.round(p * chars.length);
+    if (n === litN) return;
+    for (let i = Math.min(n, litN); i < Math.max(n, litN); i++) chars[i].classList.toggle('on', i < n);
+    litN = n;
+  }
+
+  /* ---------- output modes: exploded file view ---------- */
+  const xstage = $('#xstage'), xviz = xstage.querySelector('.xviz');
+  const xLayers = $$('#xstage .ly'), xLabels = $$('#xstage .lb');
+  const mBtns = $$('.mseg button'), mInd = $('.mseg-ind'), mDesc = $$('.mode-desc p');
+  const MODES = {
+    oppo: ['base', 'gain', 'exif', 'mark', 'extras', 'trailer'],
+    apple: ['base', 'gain', 'exif', 'mark', 'style', 'portrait']
+  };
+  let curMode = 'oppo', mAuto = !reduce, mTimer = 0, swapT = 0;
+  const moveMInd = () => {
+    const b = mBtns.find(x => x.dataset.mode === curMode);
+    mInd.style.width = b.offsetWidth + 'px';
+    mInd.style.transform = `translateX(${b.offsetLeft - 4}px)`;
+  };
+  function setMode(m) {
+    curMode = m;
+    xstage.dataset.mode = m;
+    const order = MODES[m];
+    [...xLayers, ...xLabels].forEach(el => {
+      const i = order.indexOf(el.dataset.k);
+      const out = i < 0;
+      el.classList.toggle('out', out);
+      el.style.setProperty('--idx', String(out ? order.length : i));
+      if (el.classList.contains('lb')) {
+        el.style.order = String(10 - (out ? 0 : i));
+        el.setAttribute('aria-hidden', String(out));
+      }
+    });
+    // 「HDR 标记」这一层两种模式都有，只换颜色和说明
+    const mark = xLabels.find(l => l.dataset.k === 'mark');
+    mark.classList.add('swap');
+    clearTimeout(swapT);
+    swapT = setTimeout(() => {
+      mark.querySelectorAll('[data-oppo]').forEach(n => { n.textContent = n.dataset[m]; });
+      mark.classList.remove('swap');
+    }, reduce ? 0 : 260);
+    mBtns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mode === m)));
+    mDesc.forEach(p => p.classList.toggle('on', p.dataset.mode === m));
+    moveMInd();
+  }
+  mBtns.forEach(b => b.addEventListener('click', () => {
+    mAuto = false;
+    clearInterval(mTimer);
+    setMode(b.dataset.mode);
+  }));
+  // 进入视野后自动在两种模式间切换，用户点过一次就停下
+  new IntersectionObserver(([en]) => {
+    clearInterval(mTimer);
+    if (en.isIntersecting && mAuto) mTimer = setInterval(() => setMode(curMode === 'oppo' ? 'apple' : 'oppo'), 4200);
+  }, { threshold: .55 }).observe(xviz);
+  // 滚动进入时，叠在一起的图层逐渐展开
+  function updateExplode(vh) {
+    const r = xviz.getBoundingClientRect();
+    if (r.bottom < -100 || r.top > vh + 100) return;
+    const e = smooth(0, 1, reduce ? 1 : (vh * .98 - r.top) / (vh * .6));
+    xstage.style.setProperty('--spread', (.06 + .94 * e).toFixed(3));
+    xstage.style.setProperty('--lo', smooth(.55, .95, e).toFixed(3));
+  }
+  setMode('oppo');
+  addEventListener('resize', moveMInd);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(moveMInd);
+
+  /* ---------- scroll loop + adaptive nav ---------- */
+  const nav = $('#nav');
+  let queued = false;
+  function tick() {
+    queued = false;
+    const vh = window.innerHeight;
+    if (!reduce) updateSeq(vh);
+    updateLightup(vh);
+    updateExplode(vh);
+    const nb = nav.getBoundingClientRect().bottom;
+    const under = document.elementFromPoint(window.innerWidth / 2, nb + 2);
+    nav.classList.toggle('on-light', !!(under && under.closest('.light')));
+  }
+  const queue = () => { if (!queued) { queued = true; requestAnimationFrame(tick); } };
+  addEventListener('scroll', queue, { passive: true });
+  addEventListener('resize', queue);
+  tick();
+
+  /* ---------- reveal on scroll ---------- */
+  function countUp(el) {
+    const target = +el.dataset.count, t0 = performance.now();
+    const step = now => {
+      const p = clamp((now - t0) / 1300);
+      el.textContent = String(Math.round(target * (1 - Math.pow(1 - p, 3))));
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+  const revealEls = $$('[data-reveal]');
+  if (!reduce && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      for (const en of entries) {
+        if (!en.isIntersecting) continue;
+        en.target.classList.add('in');
+        en.target.querySelectorAll('[data-count]').forEach(countUp);
+        io.unobserve(en.target);
+      }
+    }, { rootMargin: '0px 0px -10% 0px' });
+    const vh = window.innerHeight;
+    for (const el of revealEls) {
+      if (el.getBoundingClientRect().top > vh * .92) {
+        el.classList.add('pre');
+        el.querySelectorAll('[data-count]').forEach(n => { n.textContent = '0'; });
+        io.observe(el);
+      } else el.classList.add('in');
+    }
+  } else revealEls.forEach(el => el.classList.add('in'));
+
+  /* ---------- range fill helper ---------- */
+  const fillRange = r => r.style.setProperty('--v', ((r.value - r.min) / (r.max - r.min)) * 100 + '%');
+
+  /* ---------- photographic style demo ---------- */
+  const pad = $('#stylePad'), puck = pad.querySelector('.puck'), stylePhoto = $('#stylePhoto'), styleBox = $('#styleBox');
+  const slTex = $('#slTex'), slGrain = $('#slGrain'), slGlow = $('#slGlow');
+  let sx = .25, sy = -.15, padDrag = false;
+  const fmt = v => (v > 0 ? '+' : '') + v.toFixed(1);
+  function applyStyle() {
+    puck.style.left = (50 + sx * 40) + '%';
+    puck.style.top = (50 + sy * 40) + '%';
+    const tex = slTex.value / 100, grain = slGrain.value / 100, glow = slGlow.value / 100;
+    const f = [
+      `brightness(${(1 - sy * .12).toFixed(3)})`,
+      `contrast(${(1 + sy * .2 + (tex - .5) * .34).toFixed(3)})`,
+      `saturate(${(1 + Math.abs(sx) * .14 + sy * .1).toFixed(3)})`,
+      `sepia(${Math.max(0, sx * .34).toFixed(3)})`,
+      `hue-rotate(${(sx < 0 ? sx * 22 : -sx * 6).toFixed(1)}deg)`
+    ].join(' ');
+    stylePhoto.style.filter = f;
+    styleBox.style.setProperty('--grain', (grain * .5).toFixed(3));
+    styleBox.style.setProperty('--glow', (glow * .75).toFixed(3));
+    [slTex, slGrain, slGlow].forEach(fillRange);
+    pad.setAttribute('aria-valuenow', sx.toFixed(1));
+    pad.setAttribute('aria-valuetext', `色调 ${fmt(-sy)}，色彩 ${fmt(sx)}`);
+  }
+  function padFrom(e) {
+    const r = pad.getBoundingClientRect();
+    sx = clamp(((e.clientX - r.left) / r.width - .5) / .4, -1, 1);
+    sy = clamp(((e.clientY - r.top) / r.height - .5) / .4, -1, 1);
+    applyStyle();
+  }
+  pad.addEventListener('pointerdown', e => { padDrag = true; pad.setPointerCapture(e.pointerId); padFrom(e); });
+  pad.addEventListener('pointermove', e => { if (padDrag) padFrom(e); });
+  ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(t => pad.addEventListener(t, () => { padDrag = false; }));
+  pad.addEventListener('keydown', e => {
+    const d = { ArrowLeft: [-.1, 0], ArrowRight: [.1, 0], ArrowUp: [0, -.1], ArrowDown: [0, .1] }[e.key];
+    if (!d) return;
+    e.preventDefault();
+    sx = clamp(sx + d[0], -1, 1);
+    sy = clamp(sy + d[1], -1, 1);
+    applyStyle();
+  });
+  [slTex, slGrain, slGlow].forEach(r => r.addEventListener('input', applyStyle));
+  applyStyle();
+
+  /* ---------- portrait depth demo ---------- */
+  const ap = $('#slAperture'), fOut = $('#fVal'), pBox = $('#portraitBox');
+  function applyAperture() {
+    const v = ap.value / 100;
+    const f = 1.4 * Math.pow(16 / 1.4, v);
+    pBox.style.setProperty('--blur', (13 * Math.pow(1.4 / f, .85)).toFixed(2) + 'px');
+    fOut.textContent = 'ƒ/' + (f < 10 ? f.toFixed(1) : Math.round(f));
+    ap.setAttribute('aria-valuetext', fOut.textContent);
+    fillRange(ap);
+  }
+  ap.addEventListener('input', applyAperture);
+  applyAperture();
+
+  /* ---------- live photo press-and-hold ---------- */
+  const live = $('#liveDemo');
+  const liveOn = () => live.classList.add('playing');
+  const liveOff = () => live.classList.remove('playing');
+  live.addEventListener('pointerdown', e => { live.setPointerCapture(e.pointerId); liveOn(); });
+  ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(t => live.addEventListener(t, liveOff));
+  live.addEventListener('keydown', e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); liveOn(); } });
+  live.addEventListener('keyup', e => { if (e.key === ' ' || e.key === 'Enter') liveOff(); });
+  live.addEventListener('contextmenu', e => e.preventDefault());
+
+  /* ---------- round-trip gallery ---------- */
+  function tripSvg(from, to, n) {
+    const on = i => i === from || i === to;
+    const link = Math.min(from, to), rev = to < from;
+    const grad = `trip-sun-${n}`;
+    const phone = (x, i, label) => `<g class="dv${on(i) ? ' on' : ''}"><rect class="body" x="${x - 26}" y="22" width="52" height="98" rx="12"/><rect class="scr" x="${x - 21}" y="27" width="42" height="88" rx="8"${on(i) ? ` fill="url(#${grad})"` : ''}/><text x="${x}" y="146">${label}</text></g>`;
+    const app = (x, i) => `<g class="dv${on(i) ? ' on' : ''}"><rect class="app" x="${x - 27}" y="44" width="54" height="54" rx="14"/><path class="appln" d="M${x - 13} 80l8-10 6 6 11-13"/><text x="${x}" y="146">XDRemux</text></g>`;
+    const lk = i => {
+      const x1 = i ? 216 : 86, x2 = i ? 274 : 144, active = i === link;
+      const d = rev ? `M${x2} 71H${x1}` : `M${x1} 71H${x2}`;
+      const tip = rev ? x1 : x2, s = rev ? 8 : -8;
+      return `<path class="lk${active ? ' on' : ''}" d="${d}"/>` + (active ? `<path class="arrow" d="M${tip + s} 64l${-s} 7 ${s} 7"/>` : '');
+    };
+    return `<svg viewBox="0 0 360 156"><defs><linearGradient id="${grad}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#23306a"/><stop offset=".62" stop-color="#ff9a5c"/><stop offset="1" stop-color="#1a1430"/></linearGradient></defs>${lk(0)}${lk(1)}${phone(50, 0, 'OPPO')}${app(180, 1)}${phone(310, 2, 'iPhone')}</svg>`;
+  }
+  $$('.g-card').forEach((card, n) => {
+    card.querySelector('.g-viz').innerHTML = tripSvg(+card.dataset.from, +card.dataset.to, n);
+  });
+  const gal = $('#gallery'), gPrev = $('#gPrev'), gNext = $('#gNext');
+  const cardStep = () => { const c = gal.querySelector('.g-card'); return c ? c.getBoundingClientRect().width + 20 : 320; };
+  const updPaddles = () => {
+    gPrev.disabled = gal.scrollLeft < 4;
+    gNext.disabled = gal.scrollLeft > gal.scrollWidth - gal.clientWidth - 4;
+  };
+  gPrev.addEventListener('click', () => gal.scrollBy({ left: -cardStep(), behavior: reduce ? 'auto' : 'smooth' }));
+  gNext.addEventListener('click', () => gal.scrollBy({ left: cardStep(), behavior: reduce ? 'auto' : 'smooth' }));
+  gal.addEventListener('scroll', updPaddles, { passive: true });
+  addEventListener('resize', updPaddles);
+  updPaddles();
+
+  /* ---------- screenshot tabs ---------- */
+  const CAPS = {
+    windows: '支持原生拖放，HEIC 队列预览使用系统 WIC。',
+    macos: '电脑上的宽队列与详情布局。',
+    android: '支持分享接收、保存图库与后台转换。',
+    ios: '从相册、文件或分享扩展导入。'
+  };
+  const tabs = $$('[role="tab"][data-shot]');
+  const ind = $('.seg-ind'), screens = $$('.screen'), panel = $('#screens'), capEl = $('#shotCap');
+  let currentTab = tabs[0];
+  const moveInd = () => {
+    ind.style.width = currentTab.offsetWidth + 'px';
+    ind.style.transform = `translateX(${currentTab.offsetLeft - 3}px)`;
+  };
+  function selectTab(tab, focus) {
+    currentTab = tab;
+    tabs.forEach(t => {
+      const on = t === tab;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+    });
+    screens.forEach(s => {
+      const on = s.dataset.shot === tab.dataset.shot;
+      s.classList.toggle('on', on);
+      s.setAttribute('aria-hidden', String(!on));
+    });
+    capEl.textContent = CAPS[tab.dataset.shot];
+    panel.setAttribute('aria-labelledby', tab.id);
+    moveInd();
+    if (focus) tab.focus();
+  }
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => selectTab(tab, false));
+    tab.addEventListener('keydown', e => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      e.preventDefault();
+      selectTab(tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length], true);
+    });
+  });
+  selectTab($('#tab-' + (here === 'android' || here === 'ios' || here === 'macos' ? here : 'windows')), false);
+  addEventListener('resize', moveInd);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(moveInd);
+})();
+</script>
+</body>
+</html>

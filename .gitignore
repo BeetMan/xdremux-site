@@ -1,0 +1,13 @@
+# OS / editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Local preview & verification artifacts (regenerate with tools/preview.mjs)
+preview-checks/
+*.log
+
+# Tooling (not needed for the static site itself)
+node_modules/
