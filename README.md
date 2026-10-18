@@ -3,7 +3,8 @@
 XDRemux 的产品发布页：Apple 风格的黑白分段叙事 + 程序化生成的 HDR 视觉 + 滚动驱动的 HDR 转换故事。
 整站是**一个 `index.html`**（内联 CSS / JS）+ 5 个图片资源，无构建步骤、无 npm 运行时依赖。
 
-- 线上 canonical：<https://beetman.github.io/XDRemux-Flutter/>（如换仓库 / 域名请同步修改 meta，见下文）
+- 线上地址：<https://beetman.github.io/xdremux-site/>（GitHub Pages）
+- 对外入口：<https://beetya.ng/xdremux/>（301 跳转到上面的 GitHub Pages）
 - 产品仓库：<https://github.com/BeetMan/XDRemux-Flutter>
 
 ## 目录结构
@@ -20,6 +21,8 @@ XDRemux 的产品发布页：Apple 风格的黑白分段叙事 + 程序化生成
 │   └── ios.webp
 ├── tools/
 │   └── preview.mjs     # 零依赖无头 Chrome 截图 / 布局自检 / OG 生成
+├── .github/workflows/
+│   └── deploy-pages.yml # push main -> 构建并发布到 GitHub Pages
 └── preview-checks/     # 本地生成的截图与报告（.gitignore，不提交）
 ```
 
@@ -68,14 +71,17 @@ CHROME_PATH=/path/to/chrome node tools/preview.mjs   # 自定义浏览器路径
 5. **桌面截图舞台**：Windows / macOS 截图在 ≥735px 时放到深色圆角底板上，解决浅色界面叠浅灰背景「白上白」的问题；手机上仍保持无底板的轻量呈现。
 6. **分享信息**：`<title>`、Open Graph、Twitter Card 补全，新增 1200×630 `assets/og.jpg`（由 `tools/preview.mjs --og` 生成）。
 
-## 部署与 canonical
+## 部署
 
-当前页面的 canonical / `og:url` / `og:image` 指向 GitHub Pages 的
-`https://beetman.github.io/XDRemux-Flutter/`。如果之后部署到别的仓库、子路径或自定义域名，请同步修改：
-
-- `index.html` 中 `link[rel=canonical]`、`meta[property="og:url"]`、`og:image` / `twitter:image`；
-- 重新生成 `assets/og.jpg`（改文案或首屏后）；
-- README 里的线上地址。
+- **GitHub Pages**：push 到 `main` 后由 [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml) 自动发布，
+  线上地址 <https://beetman.github.io/xdremux-site/>。仓库 Settings → Pages 的 Source 需为「GitHub Actions」。
+- **beetya.ng/xdremux 入口**：由 beetya.ng 站点的 Cloudflare Pages Function
+  （`BeetMan/beetya-dot-ng` 仓库 `functions/xdremux/[[path]].js`）做 301 跳转到 GitHub Pages；
+  该 Function 原先反代 `xdremux.pages.dev`，现已改为纯跳转，原反代逻辑停止。
+- 如果更换仓库名 / 域名，需要同步修改 `index.html` 里的 `link[rel=canonical]`、`meta[property="og:url"]`、
+  `og:image` / `twitter:image`，重新生成 `assets/og.jpg`，并更新 beetya.ng 那个 Function 的跳转目标。
+- 旧的 Cloudflare Pages 项目 `xdremux`（`xdremux.pages.dev`，Astro 版）已不再被引用，
+  确认无误后可在 Cloudflare Dashboard 或 `wrangler pages project delete xdremux` 删除。
 
 ## 版本管理约定
 
