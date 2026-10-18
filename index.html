@@ -3,18 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>XDRemux</title>
+<title>XDRemux — ProXDR 照片转标准 HDR HEIC</title>
 <meta name="description" content="XDRemux 将 OPPO、一加、realme 拍摄的 ProXDR 照片转换为标准 HDR HEIC，支持 Apple 摄影风格、人像与 Live Photo，覆盖 Windows、macOS、Android、iOS 和 HarmonyOS。">
 <link rel="icon" href="assets/icon.png">
 <link rel="canonical" href="https://beetman.github.io/XDRemux-Flutter/">
 <link rel="apple-touch-icon" href="assets/icon.png">
 <meta name="theme-color" content="#000000">
 <meta property="og:type" content="website">
-<meta property="og:title" content="XDRemux">
+<meta property="og:title" content="XDRemux — 让照片跨越设备，也保留继续创作的可能。">
 <meta property="og:description" content="XDRemux 将 OPPO、一加、realme 拍摄的 ProXDR 照片转换为标准 HDR HEIC，支持 Apple 摄影风格、人像与 Live Photo，覆盖 Windows、macOS、Android、iOS 和 HarmonyOS。">
 <meta property="og:url" content="https://beetman.github.io/XDRemux-Flutter/">
-<meta property="og:image" content="https://beetman.github.io/XDRemux-Flutter/assets/icon.png">
-<meta name="twitter:card" content="summary">
+<meta property="og:site_name" content="XDRemux">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://beetman.github.io/XDRemux-Flutter/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="XDRemux 官网首屏：渐变字标、标语与 HDR 日落示意图">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="XDRemux — ProXDR 照片转标准 HDR HEIC">
+<meta name="twitter:description" content="将 OPPO、一加、realme 的 ProXDR 照片转换为标准 HDR HEIC，支持 Apple 摄影风格、人像与 Live Photo。免费开源，覆盖五个平台。">
+<meta name="twitter:image" content="https://beetman.github.io/XDRemux-Flutter/assets/og.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap">
@@ -90,10 +98,10 @@ button{font-family:inherit}
 .more:hover{text-decoration:underline;text-underline-offset:3px}
 
 /* ---------- hero ---------- */
-.hero{padding-top:clamp(44px,7vw,92px);text-align:center}
+.hero{padding-top:clamp(44px,7vw,92px);padding-bottom:clamp(56px,8vw,104px);text-align:center}
 .hero-name{padding-bottom:.08em;background:linear-gradient(100deg,var(--warm-1) 8%,var(--warm-2) 55%,var(--warm-3) 96%);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:clamp(3.5rem,11vw,7.5rem);line-height:1.02;letter-spacing:-.03em}
 .hero-tag{margin-top:clamp(10px,1.4vw,18px);font-size:clamp(1.375rem,3.2vw,2.5rem);font-weight:600;line-height:1.2;letter-spacing:-.01em}
-.hero-media{position:relative;max-width:1200px;aspect-ratio:16/9;margin:clamp(36px,5vw,60px) auto 0;border-radius:28px;background:var(--photo);overflow:hidden}
+.hero-media{position:relative;max-width:1200px;aspect-ratio:16/9;margin:clamp(28px,4vw,48px) auto 0;border-radius:28px;background:var(--photo);overflow:hidden}
 .hero-media canvas{position:absolute;inset:0;display:block;width:100%;height:100%}
 .hdr-badge{position:absolute;left:20px;top:18px;padding:2px 8px;border:1.5px solid rgba(255,255,255,.85);border-radius:6px;color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.1em}
 .media-note{position:absolute;left:20px;bottom:20px;color:rgba(245,245,247,.62);font-size:.75rem}
@@ -104,7 +112,7 @@ button{font-family:inherit}
 .media-ctrl.paused .i-pause,.media-ctrl.ended .i-pause{display:none}
 .media-ctrl.paused .i-play{display:block}
 .media-ctrl.ended .i-replay{display:block}
-.hero-buy{display:flex;flex-direction:column;align-items:center;gap:16px;padding-block:clamp(32px,4vw,44px) clamp(80px,10vw,132px)}
+.hero-buy{display:flex;flex-direction:column;align-items:center;gap:14px;padding-block:clamp(24px,3.2vw,36px) 0}
 .price{color:var(--fg-2);font-size:1.0625rem;line-height:1.5}
 @media (max-width:734px){.hero-media{aspect-ratio:4/5;border-radius:20px}}
 @media (prefers-reduced-motion: no-preference){
@@ -140,9 +148,9 @@ button{font-family:inherit}
 .hl-card .tt{color:rgba(245,245,247,.62)}
 .hl-card .tt strong{color:#fff}
 .hl-controls{position:sticky;bottom:24px;z-index:5;display:flex;align-items:center;justify-content:center;gap:14px;margin-top:28px;padding-bottom:4px}
-.hl-dots{display:flex;align-items:center;gap:14px;height:56px;padding:0 22px;border-radius:999px;background:rgba(42,42,45,.72);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+.hl-dots{display:flex;align-items:center;gap:16px;height:56px;padding:0 22px;border-radius:999px;background:rgba(42,42,45,.72);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
 .dot{position:relative;width:8px;height:8px;padding:0;border:0;border-radius:999px;background:rgba(255,255,255,.42);cursor:pointer;transition:width .5s var(--ease),background-color .3s}
-.dot::before{content:"";position:absolute;inset:-12px -6px}
+.dot::before{content:"";position:absolute;inset:-18px -9px}
 .dot.on{width:48px;background:rgba(255,255,255,.28)}
 .dot .fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:inherit;background:#f5f5f7}
 .dot:not(.on) .fill{display:none}
@@ -394,7 +402,7 @@ button{font-family:inherit}
 .g-viz .arrow{fill:none;stroke:var(--rc);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
 @keyframes dash{to{stroke-dashoffset:-11}}
 .g-body{display:grid;gap:10px;padding:26px 30px 36px}
-.g-n{color:var(--fg-3);font-size:.8125rem;font-weight:600}
+.g-n{color:var(--fg-2);font-size:.8125rem;font-weight:600}
 .g-body .tt{font-size:1.3125rem;line-height:1.3}
 .g-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 24px;margin-top:28px}
 .g-foot p{max-width:40rem;color:var(--fg-2);font-size:.9375rem}
@@ -415,6 +423,10 @@ button{font-family:inherit}
 .screen{position:absolute;inset:0;display:grid;place-items:center;margin:0;opacity:0;transform:scale(.96);transition:opacity .8s var(--ease),transform 1s var(--ease);pointer-events:none}
 .screen.on{opacity:1;transform:none;pointer-events:auto}
 .screen > img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 26px 44px rgba(0,0,0,.2))}
+.screen[data-shot="windows"] > img,.screen[data-shot="macos"] > img{filter:drop-shadow(0 20px 34px rgba(0,0,0,.5))}
+@media (min-width:735px){
+  .screen[data-shot="windows"],.screen[data-shot="macos"]{box-sizing:border-box;padding:18px;border-radius:24px;background:linear-gradient(155deg,#242429,#0c0c0e);box-shadow:0 34px 70px rgba(0,0,0,.22),inset 0 0 0 1px rgba(255,255,255,.08)}
+}
 .phone-frame{box-sizing:border-box;height:100%;aspect-ratio:720/1584;padding:9px;border-radius:48px;background:#1d1d1f;box-shadow:0 26px 50px rgba(0,0,0,.25),inset 0 0 0 1.5px #3a3a3e}
 .phone-frame img{display:block;width:100%;height:100%;border-radius:39px;object-fit:cover}
 .screen-cap{margin-top:24px;color:var(--fg-2);font-size:.9375rem;text-align:center}
@@ -478,10 +490,10 @@ button{font-family:inherit}
   .seq{height:auto}
   .seq-sticky{position:relative;display:block;height:auto}
   .seq-frame{height:auto;border-radius:0;transform:none}
-  .seq-media{position:relative;aspect-ratio:16/10;max-height:80vh}
+  .seq-media{position:relative;inset:auto;width:min(100%,128vh);aspect-ratio:16/10;margin-inline:auto}
   .seq-steps,.seq-wipe,.seq-scrim{display:none}
   .seq-caps{position:static;padding:36px 0 0}
-  .seq-caps .wrap{grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:28px}
+  .seq-caps .wrap{max-width:min(1200px,128vh);grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:28px}
   .cap{grid-area:auto;opacity:1;transform:none}
   .cap h3{font-size:1.5rem}
   .cap h3 br{display:none}
@@ -516,7 +528,11 @@ button{font-family:inherit}
     <div class="wrap">
       <div class="rise"><h1 class="hero-name">XDRemux</h1></div>
       <p class="hero-tag rise" style="--d:.15s">让照片跨越设备，<br class="br-s">也保留继续创作的可能。</p>
-      <figure class="hero-media rise" id="heroMedia" style="--d:.3s" aria-label="HDR 照片示意">
+      <div class="hero-buy rise" style="--d:.3s">
+        <a class="btn" id="heroCta" href="#download">下载</a>
+        <p class="price">免费下载，基于 MIT 许可开源。<br>支持 Windows、macOS、Android、iOS 与 HarmonyOS。<sup><a class="fn-ref" href="#fn-1">1</a></sup></p>
+      </div>
+      <figure class="hero-media rise" id="heroMedia" style="--d:.45s" aria-label="HDR 照片示意">
         <canvas id="heroBase" aria-hidden="true"></canvas>
         <canvas id="heroGlints" aria-hidden="true"></canvas>
         <span class="hdr-badge" aria-hidden="true">HDR</span>
@@ -526,10 +542,6 @@ button{font-family:inherit}
           <svg class="i-play" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4 2.3v11.4c0 .7.8 1.2 1.4.8l9-5.7c.6-.4.6-1.2 0-1.6l-9-5.7C4.8 1.1 4 1.6 4 2.3Z"/></svg>
         </button>
       </figure>
-      <div class="hero-buy rise" style="--d:.45s">
-        <a class="btn" id="heroCta" href="#download">下载</a>
-        <p class="price">免费下载，基于 MIT 许可开源。<br>支持 Windows、macOS、Android、iOS 与 HarmonyOS。<sup><a class="fn-ref" href="#fn-1">1</a></sup></p>
-      </div>
     </div>
   </section>
 
