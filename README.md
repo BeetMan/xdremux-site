@@ -3,8 +3,8 @@
 XDRemux 的产品发布页：Apple 风格的黑白分段叙事 + 程序化生成的 HDR 视觉 + 滚动驱动的 HDR 转换故事。
 整站是**一个 `index.html`**（内联 CSS / JS）+ 5 个图片资源，无构建步骤、无 npm 运行时依赖。
 
-- 线上地址：<https://beetman.github.io/xdremux-site/>（GitHub Pages）
-- 对外入口：<https://beetya.ng/xdremux/>（301 跳转到上面的 GitHub Pages）
+- 线上地址：<https://xdremux.app/>（GitHub Pages 托管 + 自定义域名）
+- 旧地址：`https://beetya.ng/xdremux/` 已改为 301 跳转到 `https://xdremux.app/`，不再作为入口
 - 产品仓库：<https://github.com/BeetMan/XDRemux-Flutter>
 
 ## 目录结构
@@ -21,6 +21,8 @@ XDRemux 的产品发布页：Apple 风格的黑白分段叙事 + 程序化生成
 │   └── ios.webp
 ├── tools/
 │   └── preview.mjs     # 零依赖无头 Chrome 截图 / 布局自检 / OG 生成
+├── dns/
+│   └── xdremux.app.zone # GitHub Pages 自定义域名所需 DNS 记录（BIND 格式，可在 CF 导入）
 ├── .github/workflows/
 │   └── deploy-pages.yml # push main -> 构建并发布到 GitHub Pages
 └── preview-checks/     # 本地生成的截图与报告（.gitignore，不提交）
@@ -73,13 +75,25 @@ CHROME_PATH=/path/to/chrome node tools/preview.mjs   # 自定义浏览器路径
 
 ## 部署
 
-- **GitHub Pages**：push 到 `main` 后由 [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml) 自动发布，
-  线上地址 <https://beetman.github.io/xdremux-site/>。仓库 Settings → Pages 的 Source 需为「GitHub Actions」。
-- **beetya.ng/xdremux 入口**：由 beetya.ng 站点的 Cloudflare Pages Function
-  （`BeetMan/beetya-dot-ng` 仓库 `functions/xdremux/[[path]].js`）做 301 跳转到 GitHub Pages；
-  该 Function 原先反代 `xdremux.pages.dev`，现已改为纯跳转，原反代逻辑停止。
-- 如果更换仓库名 / 域名，需要同步修改 `index.html` 里的 `link[rel=canonical]`、`meta[property="og:url"]`、
-  `og:image` / `twitter:image`，重新生成 `assets/og.jpg`，并更新 beetya.ng 那个 Function 的跳转目标。
+- **GitHub Pages**：push 到 `main` 后由 [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml) 自动发布。
+  仓库 Settings → Pages：Source 为「GitHub Actions」，Custom domain 为 `xdremux.app`。
+- **自定义域名**：`https://xdremux.app/` 由 GitHub Pages 直接提供服务，TLS 证书由 GitHub 自动签发。
+  Cloudflare DNS 里需要下面这些记录，**全部保持 DNS only（灰色云朵）**——开了橙色云朵会挡住 GitHub 的
+  ACME 验证，证书就签不下来：
+
+  | 类型 | 名称 | 值 |
+  | --- | --- | --- |
+  | A | `@` | `185.199.108.153`、`185.199.109.153`、`185.199.110.153`、`185.199.111.153` |
+  | AAAA | `@` | `2606:50c0:8000::153`、`2606:50c0:8001::153`、`2606:50c0:8002::153`、`2606:50c0:8003::153` |
+  | CNAME | `www` | `beetman.github.io` |
+
+  完整记录见 [`dns/xdremux.app.zone`](dns/xdremux.app.zone)（BIND 格式；Cloudflare DNS → Records →
+  Import and Export → Import 可直接导入）。`www.xdremux.app` 会由 GitHub Pages 自动 301 到 `xdremux.app`。
+  证书就绪后建议在 Pages 设置里打开「Enforce HTTPS」。
+- **旧入口**：`beetya.ng/xdremux/*` 现在由 beetya.ng 的 Pages Function（`BeetMan/beetya-dot-ng` 仓库）
+  301 到 `https://xdremux.app/`，仅作为旧链接过渡；如需彻底停用，删掉该 Function 并重新部署 beetya.ng 即可。
+- 如果更换域名，需要同步修改 `index.html` 的 `link[rel=canonical]`、`meta[property="og:url"]`、
+  `og:image` / `twitter:image`，重新生成 `assets/og.jpg`，并更新本文件与 `dns/` 里的记录。
 - 旧的 Cloudflare Pages 项目 `xdremux`（`xdremux.pages.dev`，Astro 版）已不再被引用，
   确认无误后可在 Cloudflare Dashboard 或 `wrangler pages project delete xdremux` 删除。
 
