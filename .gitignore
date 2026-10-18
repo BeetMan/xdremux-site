@@ -11,3 +11,4 @@ preview-checks/
 
 # Tooling (not needed for the static site itself)
 node_modules/
+.wrangler/

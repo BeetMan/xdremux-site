@@ -77,6 +77,8 @@ CHROME_PATH=/path/to/chrome node tools/preview.mjs   # 自定义浏览器路径
 
 - **GitHub Pages**：push 到 `main` 后由 [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml) 自动发布。
   仓库 Settings → Pages：Source 为「GitHub Actions」，Custom domain 为 `xdremux.app`。
+- **架构：GitHub Pages 直接服务，没有 Worker / 反向代理**。Cloudflare 只负责 `xdremux.app` 的 DNS。
+  （曾用过一个 Workers 边缘代理来绕过 Cloudflare DNS 写权限，现已删除；不要再用。）
 - **自定义域名**：`https://xdremux.app/` 由 GitHub Pages 直接提供服务，TLS 证书由 GitHub 自动签发。
   Cloudflare DNS 里需要下面这些记录，**全部保持 DNS only（灰色云朵）**——开了橙色云朵会挡住 GitHub 的
   ACME 验证，证书就签不下来：
