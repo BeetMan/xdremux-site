@@ -505,7 +505,7 @@ button{font-family:inherit}
 </head>
 <body>
 
-<div class="ribbon"><div class="wrap"><p>XDRemux 0.4.3 现已推出，新增华为 Mate 70 人像转换。<a href="https://github.com/BeetMan/XDRemux-Flutter/blob/main/tools/installer/RELEASE_NOTES_v0.4.3.md" target="_blank" rel="noopener">查看更新记录 ›</a></p></div></div>
+<div class="ribbon"><div class="wrap"><p>XDRemux 0.4.4 现已推出，iPhone 上可直接保存 Live Photo。<a href="https://github.com/BeetMan/XDRemux-Flutter/blob/main/tools/installer/RELEASE_NOTES_v0.4.4.md" target="_blank" rel="noopener">查看更新记录 ›</a></p></div></div>
 
 <header class="nav" id="nav">
   <div class="wrap">
@@ -694,7 +694,7 @@ button{font-family:inherit}
         </article>
 
         <article class="tile t-portrait" data-reveal style="--d:.1s">
-          <p class="tile-copy tt"><strong>人像，保留真实景深。</strong>读取 OPPO 的 <code>rear.depth</code> 与未虚化底图，交给 Apple 照片重新虚化。v0.4.3 新增华为 Mate 70 人像。<sup><a class="fn-ref" href="#fn-6">6</a></sup></p>
+          <p class="tile-copy tt"><strong>人像，保留真实景深。</strong>读取原图里的深度与未虚化底图，交给 Apple 照片重新虚化。支持 OPPO 后摄与前摄（v0.4.4 新增）、华为 Mate 70 人像。<sup><a class="fn-ref" href="#fn-6">6</a></sup></p>
           <div class="portrait-demo">
             <div class="portrait-photo" id="portraitBox"><img data-scene="hdr" alt=""><div class="subject"><span class="focus"></span></div></div>
             <label class="aperture" for="slAperture">光圈<input class="rng" type="range" id="slAperture" min="0" max="100" value="28"><output id="fVal" for="slAperture">ƒ/2.8</output></label>
@@ -703,7 +703,7 @@ button{font-family:inherit}
         </article>
 
         <article class="tile t-live" data-reveal>
-          <p class="tile-copy tt"><strong>动态照片，配对成 Live Photo。</strong>生成同名 HEIC 与 MOV，带配对标识和封面时刻。<sup><a class="fn-ref" href="#fn-7">7</a></sup></p>
+          <p class="tile-copy tt"><strong>动态照片，配对成 Live Photo。</strong>生成同名 HEIC 与 MOV，带配对标识和封面时刻。在 iPhone 上可直接存成有声音的实况照片。<sup><a class="fn-ref" href="#fn-7">7</a></sup></p>
           <button type="button" class="live-demo" id="liveDemo" aria-label="按住播放实况示意">
             <img data-scene="hdr" alt="">
             <span class="live-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="5.6"/><circle class="orbit" cx="12" cy="12" r="9.2" stroke-dasharray="1.6 2.2"/></svg>实况</span>
@@ -868,7 +868,7 @@ button{font-family:inherit}
         <li data-reveal style="--d:.08s"><span class="n">2</span><h3>查看详情</h3><p>检查格式、尺寸、EXIF、HDR 类型、拍摄模式与动态照片信息。</p></li>
         <li data-reveal style="--d:.16s"><span class="n">3</span><h3>选择转换方式</h3><p>选择输出模式，按需开启摄影风格、人像或动态照片处理。</p></li>
         <li data-reveal style="--d:.24s"><span class="n">4</span><h3>开始转换</h3><p>在队列里查看进度。失败项目可以重试，或调整设置后重新转换。</p></li>
-        <li data-reveal style="--d:.32s"><span class="n">5</span><h3>导出结果</h3><p>电脑上写入输出目录；手机上保存静帧到图库，或分享文件。</p></li>
+        <li data-reveal style="--d:.32s"><span class="n">5</span><h3>导出结果</h3><p>电脑上写入输出目录；iPhone 上可直接保存为 Live Photo，其他手机保存静帧到图库或分享文件。</p></li>
       </ol>
       <p class="extras">支持中文与英文界面。</p>
     </div>
@@ -879,7 +879,7 @@ button{font-family:inherit}
     <div class="wrap">
       <header class="sec-head center" data-reveal>
         <h2 class="sec-title">哪个版本适合你？</h2>
-        <p class="lead">XDRemux <span data-version>v0.4.3</span>，免费下载。</p>
+        <p class="lead">XDRemux <span data-version>v0.4.4</span>，免费下载。</p>
       </header>
       <div class="cmp-scroll" data-reveal>
         <ul class="cmp">
@@ -888,7 +888,7 @@ button{font-family:inherit}
             <div class="cmp-tags"></div>
             <h3>Windows</h3>
             <p class="cmp-kind">x64 · Setup.exe</p>
-            <a class="btn btn-md" data-asset="windows" href="https://github.com/BeetMan/XDRemux-Flutter/releases/download/v0.4.3/XDRemux-Windows-0.4.3-Setup.exe" target="_blank" rel="noopener">下载</a>
+            <a class="btn btn-md" data-asset="windows" href="https://github.com/BeetMan/XDRemux-Flutter/releases/download/v0.4.4/XDRemux-Windows-0.4.4-Setup.exe" target="_blank" rel="noopener">下载</a>
             <p class="cf"><span>安装</span>运行安装器，无需另装 ffmpeg</p>
             <p class="cf"><span>导入</span>拖放或选择文件</p>
             <p class="cf"><span>长时间任务</span>最小化到托盘继续转换</p>
@@ -897,9 +897,9 @@ button{font-family:inherit}
             <svg class="cmp-ico" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="11" y="13" width="38" height="26" rx="3"/><path d="M5 44h50l-3 4H8Z"/></svg>
             <div class="cmp-tags"></div>
             <h3>macOS</h3>
-            <p class="cmp-kind">DMG</p>
-            <a class="btn btn-md" data-asset="macos" href="https://github.com/BeetMan/XDRemux-Flutter/releases/download/v0.4.3/XDRemux-macOS-0.4.3.dmg" target="_blank" rel="noopener">下载</a>
-            <p class="cf"><span>安装</span>拖入「应用程序」</p>
+            <p class="cmp-kind">Apple Silicon · DMG</p>
+            <a class="btn btn-md" data-asset="macos" href="https://github.com/BeetMan/XDRemux-Flutter/releases/download/v0.4.4/XDRemux-macOS-0.4.4.dmg" target="_blank" rel="noopener">下载</a>
+            <p class="cf"><span>安装</span>拖入「应用程序」，首次打开需手动允许<sup><a class="fn-ref" href="#fn-1">1</a></sup></p>
             <p class="cf"><span>导入</span>选择文件</p>
             <p class="cf"><span>导出</span>写入输出目录</p>
           </li>
@@ -908,7 +908,7 @@ button{font-family:inherit}
             <div class="cmp-tags"></div>
             <h3>Android</h3>
             <p class="cmp-kind">APK</p>
-            <a class="btn btn-md" data-asset="android" href="https://github.com/BeetMan/XDRemux-Flutter/releases/download/v0.4.3/XDRemux-Android-0.4.3.apk" target="_blank" rel="noopener">下载</a>
+            <a class="btn btn-md" data-asset="android" href="https://github.com/BeetMan/XDRemux-Flutter/releases/download/v0.4.4/XDRemux-Android-0.4.4.apk" target="_blank" rel="noopener">下载</a>
             <p class="cf"><span>安装</span>安装 APK</p>
             <p class="cf"><span>导入</span>选择器或分享接收</p>
             <p class="cf"><span>长时间任务</span>前台服务后台转换</p>
@@ -918,17 +918,17 @@ button{font-family:inherit}
             <div class="cmp-tags"><span class="tag tag-unsigned">未签名</span></div>
             <h3>iOS</h3>
             <p class="cmp-kind">IPA</p>
-            <a class="btn btn-md" data-asset="ios" href="https://github.com/BeetMan/XDRemux-Flutter/releases/download/v0.4.3/XDRemux-iOS-0.4.3-unsigned.ipa" target="_blank" rel="noopener">下载</a>
+            <a class="btn btn-md" data-asset="ios" href="https://github.com/BeetMan/XDRemux-Flutter/releases/download/v0.4.4/XDRemux-iOS-0.4.4-unsigned.ipa" target="_blank" rel="noopener">下载</a>
             <p class="cf"><span>安装</span>自行签名后侧载<sup><a class="fn-ref" href="#fn-1">1</a></sup></p>
             <p class="cf"><span>导入</span>相册、文件与分享扩展</p>
-            <p class="cf"><span>导出</span>保存到相册或分享</p>
+            <p class="cf"><span>导出</span>保存为 Live Photo 或分享</p>
           </li>
           <li class="cmp-col" data-platform="harmony">
             <svg class="cmp-ico" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="19" y="7" width="22" height="46" rx="5"/><path d="M27 11h6"/></svg>
             <div class="cmp-tags"><span class="tag tag-unsigned">未签名</span></div>
             <h3>HarmonyOS</h3>
             <p class="cmp-kind">Flutter · HAP</p>
-            <a class="btn btn-md" data-asset="harmony" href="https://github.com/BeetMan/XDRemux-Flutter/releases/download/v0.4.3/XDRemux-HarmonyOS-0.4.3-unsigned.hap" target="_blank" rel="noopener">下载</a>
+            <a class="btn btn-md" data-asset="harmony" href="https://github.com/BeetMan/XDRemux-Flutter/releases/download/v0.4.4/XDRemux-HarmonyOS-0.4.4-unsigned.hap" target="_blank" rel="noopener">下载</a>
             <p class="cf"><span>安装</span>DevEco Studio 本地签名<sup><a class="fn-ref" href="#fn-1">1</a></sup></p>
             <p class="cf"><span>导入</span>系统选择器或分享</p>
             <p class="cf"><span>导出</span>保存到图库或分享</p>
@@ -937,8 +937,8 @@ button{font-family:inherit}
             <svg class="cmp-ico" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="19" y="7" width="22" height="46" rx="5"/><path d="M27 11h6M25 24h10v10H25Z"/></svg>
             <div class="cmp-tags"><span class="tag tag-unsigned">未签名</span><span class="tag tag-preview">预览版</span></div>
             <h3>HarmonyOS 原生</h3>
-            <p class="cmp-kind">ArkUI · <span data-native-version>0.5.0-alpha1</span></p>
-            <a class="btn btn-md" data-asset="harmonyNative" href="https://github.com/BeetMan/XDRemux-Flutter/releases/download/v0.4.3/XDRemux-HarmonyOS-Native-0.5.0-alpha1-unsigned.hap" target="_blank" rel="noopener">下载</a>
+            <p class="cmp-kind">ArkUI · <span data-native-version>0.5.1</span></p>
+            <a class="btn btn-md" data-asset="harmonyNative" href="https://github.com/BeetMan/XDRemux-Flutter/releases/download/harmony-v0.5.1/XDRemux-HarmonyOS-Native-0.5.1-unsigned.hap" target="_blank" rel="noopener">下载</a>
             <p class="cf"><span>安装</span>本地签名后安装</p>
             <p class="cf"><span>界面</span>ArkTS / ArkUI 原生实现</p>
             <p class="cf"><span>共存</span>独立包名，可与 Flutter 版共存</p>
@@ -959,19 +959,19 @@ button{font-family:inherit}
   <section class="fnotes" aria-label="脚注">
     <div class="wrap">
       <ol>
-        <li id="fn-1">iOS 与 HarmonyOS 安装包未签名，不能像商店应用一样直接安装。iOS 版未通过 App Store / TestFlight 分发；HarmonyOS 请通过 DevEco Studio 配置本地签名。</li>
-        <li id="fn-2">ProXDR 转换支持 LHDR / UHDR 容器。选择器接受 HEIC / HEIF / JPEG，但扩展名正确不代表能完成所有转换，能力取决于照片内部结构。纯 Rust 解码暂不支持 4:2:2 / 4:4:4 HEVC，部分 iPhone HEIC 截图可能失败。</li>
+        <li id="fn-1">iOS 与 HarmonyOS 安装包未签名，不能像商店应用一样直接安装。iOS 版未通过 App Store / TestFlight 分发；HarmonyOS 请通过 DevEco Studio 配置本地签名。macOS 版未经 Apple 公证，首次打开会被 Gatekeeper 拦截，请在「系统设置 › 隐私与安全性」中允许，或右键点按 app 选择「打开」；目前仅支持 Apple Silicon（M 系列），Intel Mac 可以启动但无法完成转换。</li>
+        <li id="fn-2">ProXDR 转换支持 LHDR / UHDR 容器。选择器接受 HEIC / HEIF / JPEG，但扩展名正确不代表能完成所有转换，能力取决于照片内部结构。纯 Rust 解码暂不支持 4:2:2 / 4:4:4 HEVC，部分 iPhone HEIC 截图可能失败。转换失败时，可在应用内的编解码诊断中查看当前平台的解码能力与失败原因，并复制诊断信息。</li>
         <li id="fn-3">HDR 能否显示、图库是否允许继续编辑，取决于目标应用与设备。OPPO 图库对兼容文件再次编辑后，HDR 增益图仍可能丢失。本页照片与界面效果为示意图，并非实拍或实际输出。</li>
         <li id="fn-4">Apple 摄影风格、人像及 Live Photo 包含实验性实现，实际效果取决于原始照片结构、系统版本和目标设备。请保留原图，先用少量照片验证自己的工作流。</li>
         <li id="fn-5">OPPO ProXDR 走 HDR 转换路径；其他普通照片走风格重建路径，输出 SDR + 风格，不保证保留原有增益图。普通照片的语义分区蒙版仍含占位实现，柔肤效果尚未完整实现；部分非 Standard 风格的调节参数尚未支持，效果不承诺与 Apple 原生逐像素一致。</li>
-        <li id="fn-6">人像转换只使用照片中真实存在且可读取的深度信息，不会从普通照片生成景深。人像效果通常需要在 Apple 照片中手动开启。缺少可用 <code>src.image</code> 时回退到 OPPO 主图，缺少受支持的深度数据则跳过人像转换。华为支持以现有 Mate 70 样片为依据，不代表所有华为机型与拍摄模式都已适配。</li>
-        <li id="fn-7">Live Photo 是两个文件，请把 HEIC 和 MOV 一起导入 Apple 照片。「保存图库」与单文件分享目前只处理静帧，不会自动创建系统 Live Photo 资产；实况播放与声音仍需在目标设备上验证。支持 Android V1 / legacy MicroVideo、HEIF <code>mpvd</code>、OPPO LPEX 与已验证的华为追加视频结构。</li>
+        <li id="fn-6">人像转换只使用照片中真实存在且可读取的深度信息，不会从普通照片生成景深。人像效果通常需要在 Apple 照片中手动开启。缺少可用 <code>src.image</code> 时回退到 OPPO 主图，缺少受支持的深度数据则跳过人像转换。OPPO 前置人像与华为支持均以现有样片为依据，不代表所有机型与拍摄模式都已适配。</li>
+        <li id="fn-7">Live Photo 由同名 HEIC 与 MOV 两个文件组成。iOS 版可在应用内直接保存，两个文件以同一事务写入「照片」，成为可播放、有声音的实况照片；在电脑或其他设备上，请把 HEIC 和 MOV 一起导入 Apple 照片。Android 与 HarmonyOS 的「保存图库」只处理静帧，HarmonyOS Flutter 版暂不支持成对分享两个文件。支持 Android V1 / legacy MicroVideo、HEIF <code>mpvd</code>、OPPO LPEX 与已验证的华为追加视频结构。</li>
         <li id="fn-8">华为照片的识别、风格、人像与动态照片处理共用 Rust 管线，但共用逻辑不等于所有设备都已完成真机验收。XMAGE <code>xtstyle</code> 目前用于只读诊断，尚未映射到 Apple 摄影风格。</li>
         <li id="fn-9">往返工作流依靠原始照片恢复原机水印、OPPO 元数据和私有尾部数据。恢复原机水印为可选项，不勾选时保留 iPhone 回传画面。</li>
       </ol>
       <div class="fn-extra">
         <p>尽量导入未经社交软件压缩或图库重编码的原文件，私有尾部、深度或动态资源可能在转存时丢失。设备兼容性按样片逐步验证，已有样片通过不代表整个平台或品牌都已适配，详见<a href="https://github.com/BeetMan/XDRemux-Flutter/blob/main/docs/validation/device-compat-matrix.md" target="_blank" rel="noopener">设备兼容矩阵</a>。</p>
-        <p>反馈问题时，请在 <a href="https://github.com/BeetMan/XDRemux-Flutter/issues" target="_blank" rel="noopener">GitHub Issues</a> 附上平台、设备型号、系统与应用版本、转换选项、错误信息和可复现的原始样片。照片可能包含位置等隐私信息，分享前请确认授权范围。</p>
+        <p>反馈问题时，请在 <a href="https://github.com/BeetMan/XDRemux-Flutter/issues" target="_blank" rel="noopener">GitHub Issues</a> 附上平台、设备型号、系统与应用版本、转换选项、错误信息（可从应用内的编解码诊断复制）和可复现的原始样片。照片可能包含位置等隐私信息，分享前请确认授权范围。</p>
       </div>
     </div>
   </section>
@@ -1023,16 +1023,18 @@ button{font-family:inherit}
   /* ---------- release links ---------- */
   const REPO = 'BeetMan/XDRemux-Flutter';
   const RELEASE = {
-    tag: 'v0.4.3',
-    version: '0.4.3',
-    nativeVersion: '0.5.0-alpha1',
+    tag: 'v0.4.4',
+    version: '0.4.4',
+    // 原生鸿蒙版单独发布在 harmony-v* Release 里，不随 Flutter 版的 latest 一起出现。
+    nativeTag: 'harmony-v0.5.1',
+    nativeVersion: '0.5.1',
     files: {
-      windows: 'XDRemux-Windows-0.4.3-Setup.exe',
-      macos: 'XDRemux-macOS-0.4.3.dmg',
-      android: 'XDRemux-Android-0.4.3.apk',
-      ios: 'XDRemux-iOS-0.4.3-unsigned.ipa',
-      harmony: 'XDRemux-HarmonyOS-0.4.3-unsigned.hap',
-      harmonyNative: 'XDRemux-HarmonyOS-Native-0.5.0-alpha1-unsigned.hap'
+      windows: 'XDRemux-Windows-0.4.4-Setup.exe',
+      macos: 'XDRemux-macOS-0.4.4.dmg',
+      android: 'XDRemux-Android-0.4.4.apk',
+      ios: 'XDRemux-iOS-0.4.4-unsigned.ipa',
+      harmony: 'XDRemux-HarmonyOS-0.4.4-unsigned.hap',
+      harmonyNative: 'XDRemux-HarmonyOS-Native-0.5.1-unsigned.hap'
     }
   };
   const PATTERNS = {
@@ -1044,7 +1046,7 @@ button{font-family:inherit}
     harmonyNative: /^XDRemux-HarmonyOS-Native-(.+)-unsigned\.hap$/
   };
   const NAMES = { windows: 'Windows', macos: 'macOS', android: 'Android', ios: 'iOS', harmony: 'HarmonyOS' };
-  const fallbackUrl = key => `https://github.com/${REPO}/releases/download/${RELEASE.tag}/${RELEASE.files[key]}`;
+  const fallbackUrl = key => `https://github.com/${REPO}/releases/download/${key === 'harmonyNative' ? RELEASE.nativeTag : RELEASE.tag}/${RELEASE.files[key]}`;
 
   function detectPlatform() {
     const ua = navigator.userAgent || '';
