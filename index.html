@@ -446,8 +446,8 @@ button{font-family:inherit}
 }
 
 /* ---------- compare + download (light) ---------- */
-.cmp-scroll{overflow-x:auto;margin-inline:calc(var(--gutter-l) * -1) calc(var(--gutter-r) * -1);padding:4px var(--gutter-r) 12px var(--gutter-l);scrollbar-width:thin}
-.cmp{display:grid;grid-auto-columns:minmax(172px,1fr);grid-auto-flow:column;grid-template-rows:repeat(8,auto);gap:0 18px;min-width:min-content;margin:0;padding:0;list-style:none}
+.cmp-scroll{overflow:visible;margin-inline:0;padding:0}
+.cmp{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-flow:row;gap:20px 18px;margin:0;padding:0;list-style:none}
 .cmp-col{display:grid;grid-row:span 8;grid-template-rows:subgrid;justify-items:center;padding:30px 18px 14px;border-radius:24px;background:var(--tile);text-align:center}
 .cmp-col.here{box-shadow:inset 0 0 0 2px var(--link)}
 .cmp-ico{width:60px;height:60px;color:var(--fg)}
@@ -460,6 +460,9 @@ button{font-family:inherit}
 .cmp-kind{margin-top:4px;color:var(--fg-2);font-size:.8125rem}
 .cmp-col .btn{margin:20px 0 24px}
 .cmp-alt{color:var(--link);text-decoration:underline;text-underline-offset:2px}
+@media (max-width:1068px){.cmp{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:734px){.cmp{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 12px}}
+@media (max-width:734px){.cmp-col{padding:24px 12px 12px}}
 .cf{width:100%;padding-block:14px;border-top:1px solid var(--line);font-size:.875rem;line-height:1.4}
 .cf span{display:block;margin-bottom:3px;color:var(--fg-3);font-size:.75rem}
 .dl-more{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 28px;margin-top:40px;color:var(--fg-2);font-size:.9375rem}
@@ -506,7 +509,7 @@ button{font-family:inherit}
 </head>
 <body>
 
-<div class="ribbon"><div class="wrap"><p>XDRemux 0.4.5 现已推出，新增 Linux 桌面预览，修复 JPEG 色彩与 HDR 兼容。<a href="https://github.com/BeetMan/XDRemux-Flutter/blob/main/tools/installer/RELEASE_NOTES_v0.4.5.md" target="_blank" rel="noopener">查看更新记录 ›</a></p></div></div>
+<div class="ribbon"><div class="wrap"><p>XDRemux 0.4.5 现已推出，新增 Linux 桌面预览与 iPhone Duo 初步适配，修复 JPEG 色彩与 HDR 兼容。<a href="https://github.com/BeetMan/XDRemux-Flutter/blob/main/tools/installer/RELEASE_NOTES_v0.4.5.md" target="_blank" rel="noopener">查看更新记录 ›</a></p></div></div>
 
 <header class="nav" id="nav">
   <div class="wrap">
