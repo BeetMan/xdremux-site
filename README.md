@@ -61,16 +61,17 @@ CHROME_PATH=/path/to/chrome node tools/preview.mjs   # 自定义浏览器路径
 - **零图片讲故事**：Hero 与 HDR 叙事里的黄昏场景由 `<canvas>` 程序化绘制，用同一份几何生成 `hdr` / `sdr` / `gain` 三套色板，再通过 CSS `clip-path` 擦拭做「同一张照片，不同设备观感」的对比；其余演示（摄影风格、人像景深、Live Photo、批量队列）全部是 CSS / SVG。
 - **滚动叙事**：HDR 段是 `420vh` 的 sticky 舞台，滚动只写 CSS 自定义属性（`--s` / `--gain` / `--wipe`），不在滚动帧里读写布局；`prefers-reduced-motion` 下自动降级为「静态图 + 4 列文案」。
 - **交互**：轮播自动播放 / 暂停 / 重播 / 进度圆点；输出模式自动切换、用户点过即停；风格盘与光圈滑杆、按住播放实况；App 截图 Tab 支持方向键；导航随浅色章节自动反色。
-- **版本与下载**：内置 v0.4.4 的静态下载链接作为兜底，页面加载后尝试请求 GitHub Releases API 更新到最新版；请求失败时保持兜底链接。按 UA 识别平台，把 Hero 按钮换成对应安装包并把下载卡片标记为「当前设备」。
-  鸿蒙原生版单独发布在 `harmony-v*` Release（当前 `harmony-v0.5.1`），不会出现在 Flutter 版的 latest 里，所以它始终走 `RELEASE.nativeTag` 兜底链接。
+- **版本与下载**：内置 v0.4.5 的静态下载链接作为兜底，页面加载后尝试请求 GitHub Releases API 更新到最新版；请求失败时保持兜底链接。按 UA 识别平台，把 Hero 按钮换成对应安装包并把下载卡片标记为「当前设备」。
+  鸿蒙原生版单独发布在 `harmony-v*` Release（当前 `harmony-v0.5.2`），不会出现在 Flutter 版的 latest 里，所以它始终走 `RELEASE.nativeTag` 兜底链接。
 
 ## 发新版时要改的地方
 
 1. 顶部 ribbon 文案与更新记录链接（`RELEASE_NOTES_vX.Y.Z.md`）。
-2. 下载区 HTML 里写死的 `v*` 文本与 6 个 `data-asset` 链接。
+2. 下载区 HTML 里写死的 `v*` 文本与各 `data-asset` 链接。
 3. 脚本里的 `RELEASE`（`tag` / `version` / `nativeTag` / `nativeVersion` / `files`）。
-4. 按更新说明核对功能卡片与脚注里的能力边界（例如 0.4.4：iOS 直存 Live Photo、OPPO 前摄人像、macOS 仅 Apple Silicon）。
-5. `node tools/preview.mjs` 自检，并逐个确认下载链接 302 到 release-assets。
+4. 按更新说明核对功能卡片与脚注里的能力边界（例如 0.4.5：Linux 桌面预览、JPEG ICC 保留、小米 JPEG HDR 回退）。
+5. 新增平台时同步：下载卡片、`PATTERNS` / `NAMES` / `RELEASE.files`、`detectPlatform()`，以及「跨平台」区的平台数量与脚注。
+6. `node tools/preview.mjs` 自检，并逐个确认下载链接 302 到 release-assets。
 
 ## 2026-10-18 审查后的修改
 
