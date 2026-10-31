@@ -69,7 +69,7 @@ CHROME_PATH=/path/to/chrome node tools/preview.mjs   # 自定义浏览器路径
 1. 顶部 ribbon 文案与更新记录链接（`RELEASE_NOTES_vX.Y.Z.md`）。
 2. 下载区 HTML 里写死的 `v*` 文本与各 `data-asset` 链接。
 3. 脚本里的 `RELEASE`（`tag` / `version` / `nativeTag` / `nativeVersion` / `files`）。
-4. 按更新说明核对功能卡片与脚注里的能力边界（例如 0.4.6：Live Photo 默认 .pvt、摄影风格 3 可与实况同用、MPF 单图 JPEG 按 SDR）。
+4. 按更新说明核对功能卡片与脚注里的能力边界（例如 0.4.6：Live Photo 默认 .pvt、摄影风格 2 / 3 均可与实况同用、MPF 单图 JPEG 按 SDR）。
 5. 新增平台时同步：下载卡片、`PATTERNS` / `NAMES` / `RELEASE.files`、`detectPlatform()`，以及「跨平台」区的平台数量与脚注。
 6. `node tools/preview.mjs` 自检，并逐个确认下载链接 302 到 release-assets。
 
