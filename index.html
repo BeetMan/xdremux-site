@@ -442,6 +442,28 @@ button{font-family:inherit}
   .flow5 p{margin-top:0}
 }
 
+/* ---------- sneak peek (dark) ---------- */
+.peek-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 24px;max-width:1100px;margin:0 auto;padding:0;list-style:none}
+.peek-grid li:first-child{grid-column:1 / -1}
+.peek-shot{margin:0}
+.peek-shot .bezel{padding:8px;border-radius:30px;background:#1d1d1f;box-shadow:0 30px 60px rgba(0,0,0,.45),inset 0 0 0 1.5px #3a3a3e}
+.peek-shot img{display:block;width:100%;height:auto;aspect-ratio:1600/1226;border-radius:23px;background:#fff}
+.peek-shot figcaption{margin-top:16px;color:var(--fg-2);font-size:.9375rem;text-align:center}
+.peek-shot figcaption strong{color:var(--fg);font-weight:600}
+.peek-soon{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 24px;align-items:start;max-width:1100px;margin:72px auto 0;padding:clamp(28px,4vw,44px);border-radius:28px;background:var(--tile)}
+.peek-soon .soon-ico{grid-row:span 3;width:56px;height:56px;color:var(--teal)}
+.peek-soon .tag{justify-self:start;background:rgba(63,208,184,.16);color:var(--teal)}
+.peek-soon h3{font-size:clamp(1.375rem,2.4vw,1.75rem);letter-spacing:-.015em}
+.peek-soon p{color:var(--fg-2);font-size:1rem;max-width:44em}
+.peek-note{margin-top:28px;color:var(--fg-3);font-size:.8125rem;text-align:center}
+@media (max-width:734px){
+  .peek-grid{grid-template-columns:minmax(0,1fr);gap:36px}
+  .peek-shot .bezel{padding:5px;border-radius:20px}
+  .peek-shot img{border-radius:15px}
+  .peek-soon{grid-template-columns:minmax(0,1fr)}
+  .peek-soon .soon-ico{grid-row:auto;width:44px;height:44px}
+}
+
 /* ---------- compare + download (light) ---------- */
 .cmp-scroll{overflow:visible;margin-inline:0;padding:0}
 .cmp{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-flow:row;gap:20px 18px;margin:0;padding:0;list-style:none}
@@ -517,6 +539,7 @@ button{font-family:inherit}
       <li><a href="#features">功能</a></li>
       <li><a href="#modes">输出模式</a></li>
       <li><a href="#roundtrip">往返工作流</a></li>
+      <li><a href="#peek">抢先看</a></li>
       <li><a href="https://github.com/BeetMan/XDRemux-Flutter" target="_blank" rel="noopener">GitHub</a></li>
     </ul>
     <a class="btn btn-sm" href="#download">下载</a>
@@ -872,6 +895,29 @@ button{font-family:inherit}
         <li data-reveal style="--d:.32s"><span class="n">5</span><h3>导出结果</h3><p>电脑上写入输出目录；iPhone 上可直接保存为 Live Photo，其他手机保存静帧到图库或分享文件。</p></li>
       </ol>
       <p class="extras">支持中文与英文界面。</p>
+    </div>
+  </section>
+
+  <!-- ========== sneak peek: native iOS app (dark) ========== -->
+  <section class="section" id="peek">
+    <div class="wrap">
+      <header class="sec-head center" data-reveal>
+        <p class="eyebrow">抢先看</p>
+        <h2 class="sec-title">原生 iOS 版。<br>即将登场。</h2>
+        <p class="lead">SwiftUI 打造全新界面，内核依然是那套 Rust 引擎。<br class="br-l">看起来更像 iPhone，用起来也是。</p>
+      </header>
+      <ul class="peek-grid">
+        <li data-reveal><figure class="peek-shot"><div class="bezel"><img src="assets/native-queue-apple.webp" width="1600" height="1226" alt="XDRemux 原生 iOS 版开发截图：左侧转换队列，右侧原图预览与 Apple 标准转换选项" loading="lazy"></div><figcaption><strong>队列与选项，一屏尽览。</strong>屏幕够大，就不必来回切换。</figcaption></figure></li>
+        <li data-reveal style="--d:.08s"><figure class="peek-shot"><div class="bezel"><img src="assets/native-detail-apple.webp" width="1600" height="1226" alt="XDRemux 原生 iOS 版开发截图：夜空云层照片的 HDR 预览与转换选项" loading="lazy"></div><figcaption><strong>高光，先睹为快。</strong>转换之前就能看到 HDR，一键对比 SDR。</figcaption></figure></li>
+        <li data-reveal style="--d:.16s"><figure class="peek-shot"><div class="bezel"><img src="assets/native-wide-preview.webp" width="1600" height="1226" alt="XDRemux 原生 iOS 版开发截图：照片占满详情宽度，转换选项排在下方" loading="lazy"></div><figcaption><strong>照片，永远是主角。</strong>空间不够时，选项自动让位。</figcaption></figure></li>
+      </ul>
+      <p class="peek-note">截图来自 iPhone Duo 模拟器上的开发版本，正式版的界面与功能可能有所不同。</p>
+      <div class="peek-soon" data-reveal>
+        <svg class="soon-ico" viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="14" width="16" height="28" rx="4"/><rect x="34" y="14" width="16" height="28" rx="4"/><path d="M25 24h6m-2-3 3 3-3 3"/><path d="M31 33h-6m2 3-3-3 3-3"/></svg>
+        <span class="tag">Coming soon</span>
+        <h3>原图互传，就在身边。</h3>
+        <p>同一个 Wi-Fi 下，与另一台 XDRemux 或 LocalSend 设备直接收发原图，不绕道云端。发送前核对设备指纹，收下与否，由你决定。</p>
+      </div>
     </div>
   </section>
 

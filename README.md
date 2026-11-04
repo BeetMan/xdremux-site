@@ -18,7 +18,8 @@ XDRemux 的产品发布页：Apple 风格的黑白分段叙事 + 程序化生成
 │   ├── windows.webp    # 应用截图（Windows / macOS / Android / iOS）
 │   ├── macos.webp
 │   ├── android.webp
-│   └── ios.webp
+│   ├── ios.webp
+│   └── native-*.webp   # 「抢先看」：原生 iOS 版开发截图（iPhone Duo 模拟器，已裁掉状态栏）
 ├── cloudflare/edge-proxy/
 │   ├── wrangler.toml   # Worker `xdremux-app` + 自定义域名 xdremux.app / www.xdremux.app
 │   └── index.js        # 12 行逻辑：www→apex、http→https、缓存反代 GitHub Pages
