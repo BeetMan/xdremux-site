@@ -163,7 +163,14 @@ await shot('desktop-hero.png');
 report.checks.appScreens = await (async () => {
   await evaluate('document.querySelector("#tab-windows").click()');
   await scrollTo('#app', 40);
-  return shot('desktop-app.png');
+  const first = await shot('desktop-app.png');
+  for (const tab of ['macos', 'ios']) {
+    await evaluate(`document.querySelector("#tab-${tab}").click()`);
+    await sleep(1200);
+    await shot(`desktop-app-${tab}.png`);
+  }
+  await evaluate('document.querySelector("#tab-windows").click()');
+  return first;
 })();
 await scrollTo('#highlights', 8);
 await shot('desktop-highlights.png');
