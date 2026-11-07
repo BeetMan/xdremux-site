@@ -19,7 +19,7 @@ XDRemux 的产品发布页：Apple 风格的黑白分段叙事 + 程序化生成
 │   ├── macos.webp
 │   ├── android.webp
 │   ├── ios.webp
-│   └── native-*.webp   # 「抢先看」：原生 iOS 版开发截图（iPhone Duo 模拟器，已裁掉状态栏）
+│   └── native-*.webp   # 「抢先看」：原生 Apple 版开发截图（iPhone Duo 模拟器，已裁掉状态栏）
 ├── cloudflare/edge-proxy/
 │   ├── wrangler.toml   # Worker `xdremux-app` + 自定义域名 xdremux.app / www.xdremux.app
 │   └── index.js        # 12 行逻辑：www→apex、http→https、缓存反代 GitHub Pages
@@ -64,6 +64,7 @@ CHROME_PATH=/path/to/chrome node tools/preview.mjs   # 自定义浏览器路径
 - **交互**：轮播自动播放 / 暂停 / 重播 / 进度圆点；输出模式自动切换、用户点过即停；风格盘与光圈滑杆、按住播放实况；App 截图 Tab 支持方向键；导航随浅色章节自动反色。
 - **版本与下载**：内置 v0.4.7 的静态下载链接作为兜底，页面加载后尝试请求 GitHub Releases API 更新到最新版；请求失败时保持兜底链接。按 UA 识别平台，把 Hero 按钮换成对应安装包并把下载卡片标记为「当前设备」。
   鸿蒙原生版单独发布在 `harmony-v*` Release（当前 `harmony-v0.5.4`），不会出现在 Flutter 版的 latest 里，所以它始终走 `RELEASE.nativeTag` 兜底链接。
+  原生 Apple 版（SwiftUI）同理，发布在 `apple-v*` 预发布里（当前 `apple-v0.1.0`），走 `RELEASE.appleTag` 兜底链接。
 
 ## 发新版时要改的地方
 

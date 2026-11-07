@@ -916,15 +916,15 @@ button{font-family:inherit}
     <div class="wrap">
       <header class="sec-head center" data-reveal>
         <p class="eyebrow">抢先看</p>
-        <h2 class="sec-title">原生 iOS 版。<br>即将登场。</h2>
-        <p class="lead">SwiftUI 打造全新界面，内核依然是那套 Rust 引擎。<br class="br-l">看起来更像 iPhone，用起来也是。</p>
+        <h2 class="sec-title">原生 Apple 版。<br>预发布已推出。</h2>
+        <p class="lead">SwiftUI 打造全新界面，内核依然是那套 Rust 引擎。<br class="br-l">iPhone、iPad 与 Mac 都能用，0.1.0 预发布版现已可下载。</p>
       </header>
       <ul class="peek-grid">
         <li data-reveal><figure class="peek-shot"><div class="bezel"><img src="assets/native-main.webp" width="1600" height="1226" alt="XDRemux 原生 iOS 版开发截图：左侧转换队列，右侧大幅照片预览与转换选项" loading="lazy"></div><figcaption><strong>队列与照片，一屏尽览。</strong>屏幕够大，就不必来回切换。</figcaption></figure></li>
         <li data-reveal style="--d:.08s"><figure class="peek-shot"><div class="bezel"><img src="assets/native-detail-apple.webp" width="1600" height="1226" alt="XDRemux 原生 iOS 版开发截图：夜空云层照片的 HDR 预览与转换选项" loading="lazy"></div><figcaption><strong>高光，先睹为快。</strong>转换之前就能看到 HDR，一键对比 SDR。</figcaption></figure></li>
         <li data-reveal style="--d:.16s"><figure class="peek-shot"><div class="bezel"><img src="assets/native-queue-apple.webp" width="1600" height="1226" alt="XDRemux 原生 iOS 版开发截图：海景照片旁的 Apple 标准与摄影风格选项" loading="lazy"></div><figcaption><strong>选项，触手可及。</strong>输出模式与摄影风格，就在照片旁边。</figcaption></figure></li>
       </ul>
-      <p class="peek-note">截图来自 iPhone Duo 模拟器上的开发版本，正式版的界面与功能可能有所不同。</p>
+      <p class="peek-note">截图来自 iPhone Duo 模拟器上的开发版本，与 0.1.0 预发布版可能略有不同。 <a class="more" href="#download">下载预发布版 ›</a></p>
     </div>
   </section>
 
@@ -1007,6 +1007,16 @@ button{font-family:inherit}
             <p class="cf"><span>界面</span>ArkTS / ArkUI 原生实现</p>
             <p class="cf"><span>共存</span>独立包名，可与 Flutter 版共存</p>
           </li>
+          <li class="cmp-col" data-platform="appleNative">
+            <svg class="cmp-ico" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="14" width="34" height="23" rx="2.5"/><path d="M2 42h40"/><rect x="40" y="20" width="16" height="30" rx="4"/><path d="M45.5 23.5h5"/></svg>
+            <div class="cmp-tags"><span class="tag tag-unsigned">未签名</span><span class="tag tag-preview">预发布</span></div>
+            <h3>Apple 原生</h3>
+            <p class="cmp-kind">SwiftUI · <span data-apple-version>0.1.0</span></p>
+            <a class="btn btn-md" data-asset="appleMac" href="https://github.com/BeetMan/XDRemux-Flutter/releases/download/apple-v0.1.0/XDRemux-Apple-macOS-0.1.0.dmg" target="_blank" rel="noopener">下载 macOS 版</a>
+            <p class="cf"><span>安装</span>iOS 版为 <a class="cmp-alt" data-asset="appleIos" href="https://github.com/BeetMan/XDRemux-Flutter/releases/download/apple-v0.1.0/XDRemux-Apple-iOS-0.1.0-unsigned.ipa" target="_blank" rel="noopener">未签名 IPA</a>，自行签名后侧载<sup><a class="fn-ref" href="#fn-1">1</a></sup></p>
+            <p class="cf"><span>界面</span>SwiftUI 原生实现，iPhone、iPad 与 Mac</p>
+            <p class="cf"><span>共存</span>独立 Bundle ID，可与 Flutter 版共存</p>
+          </li>
         </ul>
       </div>
       <div class="dl-more">
@@ -1023,7 +1033,7 @@ button{font-family:inherit}
   <section class="fnotes" aria-label="脚注">
     <div class="wrap">
       <ol>
-        <li id="fn-1">iOS 与 HarmonyOS 安装包未签名，不能像商店应用一样直接安装。iOS 版未通过 App Store / TestFlight 分发；HarmonyOS 请通过 DevEco Studio 配置本地签名。macOS 版未经 Apple 公证，首次打开会被 Gatekeeper 拦截，请在「系统设置 › 隐私与安全性」中允许，或右键点按 app 选择「打开」；目前仅支持 Apple Silicon（M 系列），Intel Mac 可以启动但无法完成转换。iOS 最低支持 iOS 15.0；Android 仅提供 arm64 安装包（最低 API 24）；Linux 为 x64 预览版，需要 glibc 2.35 及以上，系统托盘与完成通知暂未接入。</li>
+        <li id="fn-1">iOS 与 HarmonyOS 安装包未签名，不能像商店应用一样直接安装。iOS 版未通过 App Store / TestFlight 分发；HarmonyOS 请通过 DevEco Studio 配置本地签名。macOS 版未经 Apple 公证，首次打开会被 Gatekeeper 拦截，请在「系统设置 › 隐私与安全性」中允许，或右键点按 app 选择「打开」；目前仅支持 Apple Silicon（M 系列），Intel Mac 可以启动但无法完成转换。iOS 最低支持 iOS 15.0；Android 仅提供 arm64 安装包（最低 API 24）；Linux 为 x64 预览版，需要 glibc 2.35 及以上，系统托盘与完成通知暂未接入。Apple 原生版 0.1.0 为预发布版：macOS 包仅做 ad-hoc 签名、未经公证，需要 macOS 14 及以上的 Apple Silicon Mac；iOS 包未签名，需要 iOS 17 及以上，自行签名后侧载，签名时需为主应用和分享扩展签上同一个 App Group，分享扩展才可用。</li>
         <li id="fn-2">ProXDR 转换支持 LHDR / UHDR 容器。选择器接受 HEIC / HEIF / JPEG，但扩展名正确不代表能完成所有转换，能力取决于照片内部结构。纯 Rust 解码暂不支持 4:2:2 / 4:4:4 HEVC，部分 iPhone HEIC 截图可能失败。转换失败时，可在应用内的编解码诊断中查看当前平台的解码能力与失败原因，并复制诊断信息。带 P3 / sRGB 等 RGB ICC 的 JPEG 会在 HEIC 主图与主体瓦片中保留源色彩配置，CMYK / 灰阶等不支持的 ICC 会明确报错；部分小米 / 红米 Ultra HDR JPG 在 ISO 元数据版本不受支持时会回退到 Adobe HDR XMP，照片详情会注明「HDR 解析失败」的原因。MPF 索引只列出主图、又没有增益图的 JPEG（如部分 OPPO Find N5 大师模式实况）按普通 SDR 照片处理。</li>
         <li id="fn-3">HDR 能否显示、图库是否允许继续编辑，取决于目标应用与设备。OPPO 图库对兼容文件再次编辑后，HDR 增益图仍可能丢失。本页照片与界面效果为示意图，并非实拍或实际输出。</li>
         <li id="fn-4">Apple 摄影风格、人像及 Live Photo 包含实验性实现，实际效果取决于原始照片结构、系统版本和目标设备。请保留原图，先用少量照片验证自己的工作流。</li>
@@ -1032,7 +1042,7 @@ button{font-family:inherit}
         <li id="fn-7">Live Photo 默认打包为 Apple 实况照片包 <code>.pvt</code>（内含配对的 HEIC、MOV 与 <code>metadata.plist</code>，与隔空投送实况的格式一致，不重新编码）；在设置中关闭后恢复为同名 HEIC 与 MOV 两个文件。iOS 版可在应用内直接保存，两个文件以同一事务写入「照片」，成为可播放、有声音的实况照片；在 Mac 上可直接把 <code>.pvt</code> 导入「照片」。iOS 与 macOS 直接分享 <code>.pvt</code>，Android、Windows、Linux 与 HarmonyOS 分享为单个 <code>.pvt.zip</code>。支持 Android V1 / legacy MicroVideo、HEIF <code>mpvd</code>、OPPO LPEX 与已验证的华为追加视频结构。</li>
         <li id="fn-8">华为照片的识别、风格、人像与动态照片处理共用 Rust 管线，但共用逻辑不等于所有设备都已完成真机验收。XMAGE <code>xtstyle</code> 目前用于只读诊断，尚未映射到 Apple 摄影风格。</li>
         <li id="fn-9">往返工作流依靠原始照片恢复原机水印、OPPO 元数据和私有尾部数据。恢复原机水印为可选项，不勾选时保留 iPhone 回传画面。</li>
-        <li id="fn-10">互传使用 LocalSend 协议，可与官方 LocalSend 应用互通，支持 Windows、macOS、Linux、Android、iOS 与 HarmonyOS（Flutter 版与原生版）。收发双方需在同一局域网内，接收方需在「接收」页打开接收，并逐次确认收下的文件；iOS 需允许「本地网络」权限。收到的实况照片在 iOS 上存为实况照片，在 Android 上存为图片与视频。</li>
+        <li id="fn-10">互传使用 LocalSend 协议，可与官方 LocalSend 应用互通，支持 Windows、macOS、Linux、Android、iOS 与 HarmonyOS，Flutter 版、鸿蒙原生版与 Apple 原生版之间均可互传。收发双方需在同一局域网内，接收方需在「接收」页打开接收，并逐次确认收下的文件；iOS 需允许「本地网络」权限。收到的实况照片在 iOS 上存为实况照片，在 Android 上存为图片与视频。</li>
       </ol>
       <div class="fn-extra">
         <p>尽量导入未经社交软件压缩或图库重编码的原文件，私有尾部、深度或动态资源可能在转存时丢失。设备兼容性按样片逐步验证，已有样片通过不代表整个平台或品牌都已适配，详见<a href="https://github.com/BeetMan/XDRemux-Flutter/blob/main/docs/validation/device-compat-matrix.md" target="_blank" rel="noopener">设备兼容矩阵</a>。</p>
@@ -1093,6 +1103,9 @@ button{font-family:inherit}
     // 原生鸿蒙版单独发布在 harmony-v* Release 里，不随 Flutter 版的 latest 一起出现。
     nativeTag: 'harmony-v0.5.4',
     nativeVersion: '0.5.4',
+    // 原生 Apple 版（SwiftUI）发布在 apple-v* 预发布里，同样走兜底链接。
+    appleTag: 'apple-v0.1.0',
+    appleVersion: '0.1.0',
     files: {
       windows: 'XDRemux-Windows-0.4.7-Setup.exe',
       macos: 'XDRemux-macOS-0.4.7.dmg',
@@ -1101,7 +1114,9 @@ button{font-family:inherit}
       linux: 'XDRemux-Linux-0.4.7-x64.AppImage',
       linuxTar: 'XDRemux-Linux-0.4.7-x64.tar.gz',
       harmony: 'XDRemux-HarmonyOS-0.4.7-unsigned.hap',
-      harmonyNative: 'XDRemux-HarmonyOS-Native-0.5.4-unsigned.hap'
+      harmonyNative: 'XDRemux-HarmonyOS-Native-0.5.4-unsigned.hap',
+      appleMac: 'XDRemux-Apple-macOS-0.1.0.dmg',
+      appleIos: 'XDRemux-Apple-iOS-0.1.0-unsigned.ipa'
     }
   };
   const PATTERNS = {
@@ -1115,7 +1130,8 @@ button{font-family:inherit}
     harmonyNative: /^XDRemux-HarmonyOS-Native-(.+)-unsigned\.hap$/
   };
   const NAMES = { windows: 'Windows', macos: 'macOS', android: 'Android', ios: 'iOS', linux: 'Linux', harmony: 'HarmonyOS' };
-  const fallbackUrl = key => `https://github.com/${REPO}/releases/download/${key === 'harmonyNative' ? RELEASE.nativeTag : RELEASE.tag}/${RELEASE.files[key]}`;
+  const tagFor = key => (key === 'harmonyNative' ? RELEASE.nativeTag : key.startsWith('apple') ? RELEASE.appleTag : RELEASE.tag);
+  const fallbackUrl = key => `https://github.com/${REPO}/releases/download/${tagFor(key)}/${RELEASE.files[key]}`;
 
   function detectPlatform() {
     const ua = navigator.userAgent || '';
@@ -1134,6 +1150,7 @@ button{font-family:inherit}
     const url = key => (rel.urls && rel.urls[key]) || fallbackUrl(key);
     $$('[data-version]').forEach(el => { el.textContent = 'v' + rel.version; });
     $$('[data-native-version]').forEach(el => { el.textContent = rel.nativeVersion; });
+    $$('[data-apple-version]').forEach(el => { el.textContent = RELEASE.appleVersion; });
     $$('[data-asset]').forEach(a => { a.href = url(a.dataset.asset); });
     if (here) {
       const cta = $('#heroCta');
