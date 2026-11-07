@@ -63,7 +63,7 @@ CHROME_PATH=/path/to/chrome node tools/preview.mjs   # 自定义浏览器路径
 - **滚动叙事**：HDR 段是 `420vh` 的 sticky 舞台，滚动只写 CSS 自定义属性（`--s` / `--gain` / `--wipe`），不在滚动帧里读写布局；`prefers-reduced-motion` 下自动降级为「静态图 + 4 列文案」。
 - **交互**：轮播自动播放 / 暂停 / 重播 / 进度圆点；输出模式自动切换、用户点过即停；风格盘与光圈滑杆、按住播放实况；App 截图 Tab 支持方向键；导航随浅色章节自动反色。
 - **版本与下载**：内置 v0.4.7 的静态下载链接作为兜底，页面加载后尝试请求 GitHub Releases API 更新到最新版；请求失败时保持兜底链接。按 UA 识别平台，把 Hero 按钮换成对应安装包并把下载卡片标记为「当前设备」。
-  鸿蒙原生版单独发布在 `harmony-v*` Release（当前 `harmony-v0.5.3`），不会出现在 Flutter 版的 latest 里，所以它始终走 `RELEASE.nativeTag` 兜底链接。
+  鸿蒙原生版单独发布在 `harmony-v*` Release（当前 `harmony-v0.5.4`），不会出现在 Flutter 版的 latest 里，所以它始终走 `RELEASE.nativeTag` 兜底链接。
 
 ## 发新版时要改的地方
 
