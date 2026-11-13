@@ -12,6 +12,7 @@ XDRemux 的产品发布页：Apple 风格的黑白分段叙事 + 程序化生成
 ```
 .
 ├── index.html          # 全部页面结构、样式、脚本（约 110 KB）
+├── privacy/index.html  # 隐私政策（中英双语，自包含、不加载外部资源）→ https://xdremux.app/privacy
 ├── assets/
 │   ├── icon.png        # favicon / 导航 / 页脚图标
 │   ├── og.jpg          # 1200×630 社交分享图（tools/preview.mjs --og 生成）

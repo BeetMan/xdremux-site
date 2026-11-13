@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>隐私政策 · Privacy Policy — XDRemux</title>
+<meta name="description" content="XDRemux 隐私政策：照片在设备本地处理，不上传，不收集个人数据，没有账号、广告或统计。">
+<link rel="icon" href="/assets/icon.png">
+<link rel="canonical" href="https://xdremux.app/privacy">
+<meta name="theme-color" content="#000000">
+<meta property="og:type" content="article">
+<meta property="og:title" content="隐私政策 · Privacy Policy — XDRemux">
+<meta property="og:url" content="https://xdremux.app/privacy">
+<meta property="og:site_name" content="XDRemux">
+<style>
+/* 与首页同一套色板与字体栈；本页不加载任何外部资源（无字体、脚本、统计）。 */
+:root{
+  --bg:#000; --tile:#1d1d1f; --line:#424245;
+  --fg:#f5f5f7; --fg-2:#a1a1a6; --fg-3:#86868b; --link:#2997ff;
+  --f-sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro SC","PingFang SC","Inter","Noto Sans SC","Helvetica Neue","Microsoft YaHei",sans-serif;
+  --gutter-l:max(20px,env(safe-area-inset-left,0px));
+  --gutter-r:max(20px,env(safe-area-inset-right,0px));
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){
+  :root{--bg:#fff; --tile:#f5f5f7; --line:#d2d2d7; --fg:#1d1d1f; --fg-2:#424245; --fg-3:#6e6e73; --link:#0066cc; color-scheme:light}
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-sans);font-size:1.0625rem;line-height:1.6;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+a{color:var(--link);text-decoration:none}
+a:hover{text-decoration:underline}
+.nav{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid color-mix(in srgb,var(--line) 50%,transparent)}
+.nav-in{max-width:760px;margin:0 auto;padding:12px var(--gutter-r) 12px var(--gutter-l);display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:.875rem}
+.brand{display:flex;align-items:center;gap:8px;color:var(--fg);font-weight:600}
+.brand img{border-radius:5px}
+.langs{display:flex;gap:16px}
+main{max-width:760px;margin:0 auto;padding:56px var(--gutter-r) 40px var(--gutter-l)}
+h1{font-size:clamp(2rem,6vw,2.75rem);line-height:1.1;letter-spacing:-.02em;margin:0 0 8px;text-wrap:balance}
+h2{font-size:1.3125rem;line-height:1.25;margin:40px 0 10px;letter-spacing:-.015em}
+p,li{color:var(--fg-2)}
+p{margin:0 0 14px}
+ul{margin:0 0 14px;padding-left:1.25em}
+li{margin:0 0 6px}
+strong{color:var(--fg);font-weight:600}
+.meta{color:var(--fg-3);font-size:.875rem;margin-bottom:28px}
+.lede{background:var(--tile);border-radius:18px;padding:20px 22px;margin:0 0 8px}
+.lede p{margin:0;color:var(--fg)}
+section + section{margin-top:72px;padding-top:56px;border-top:1px solid var(--line)}
+footer{max-width:760px;margin:0 auto;padding:24px var(--gutter-r) 56px var(--gutter-l);color:var(--fg-3);font-size:.8125rem;border-top:1px solid var(--line)}
+footer p{color:var(--fg-3);margin:0 0 6px}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="/"><img src="/assets/icon.png" alt="" width="22" height="22">XDRemux</a>
+    <nav class="langs" aria-label="语言 / Language"><a href="#zh">中文</a><a href="#en">English</a></nav>
+  </div>
+</header>
+
+<main>
+<section id="zh" lang="zh-CN">
+  <h1>隐私政策</h1>
+  <p class="meta">生效日期：2026 年 11 月 12 日</p>
+  <div class="lede"><p>XDRemux 在你的设备上本地转换照片。<strong>我们不收集、不上传、不出售任何个人数据</strong>，应用里没有账号、广告、统计分析或第三方追踪。</p></div>
+
+  <h2>适用范围</h2>
+  <p>本政策适用于 XDRemux 的各个版本：iOS、iPadOS 与 macOS 上的原生版（包括通过 TestFlight 分发的测试版），Windows、macOS、Android、iOS、Linux 上的跨平台版，HarmonyOS 原生版，以及本网站 xdremux.app。</p>
+
+  <h2>照片与文件</h2>
+  <ul>
+    <li>识别、预览、转换全部在设备本地完成，照片和视频不会发送到我们或任何第三方的服务器。</li>
+    <li>导入的副本、转换结果、队列记录和设置保存在应用自己的存储空间或你选择的文件夹里；卸载应用或在应用内清除即可删除。</li>
+    <li>照片里的拍摄信息（如时间、机型、位置等 EXIF）只在本地读取，用于显示和写入转换后的文件。</li>
+  </ul>
+
+  <h2>应用会请求的权限</h2>
+  <ul>
+    <li><strong>照片</strong>：用于从相册选取要转换的照片，以及把转换结果存入相册。</li>
+    <li><strong>文件与文件夹</strong>：仅访问你主动选择、拖入或通过分享面板交给应用的文件。</li>
+    <li><strong>本地网络</strong>：仅用于“局域网互传”，在同一网络内发现设备并直接传输文件。</li>
+    <li><strong>通知</strong>（部分版本）：用于提示后台转换的进度与结果。</li>
+  </ul>
+  <p>这些权限都可以在系统设置里随时关闭，关闭后对应功能不可用，其余功能不受影响。</p>
+
+  <h2>局域网互传</h2>
+  <p>互传基于 LocalSend 协议，文件在同一局域网内的两台设备之间直接传输，不经过我们的服务器或任何互联网中转。为了让对方看到并选择你的设备，应用会在局域网内广播你设置的设备名、设备类型和端口；传输内容使用 HTTPS 加密。不使用互传功能时不会进行这些通信。</p>
+
+  <h2>联网行为</h2>
+  <ul>
+    <li><strong>原生版（iOS / iPadOS / macOS）</strong>：除局域网互传外不发起任何网络连接。</li>
+    <li><strong>其他版本</strong>：可能访问 GitHub 的公开接口检查是否有新版本。这是一个不带任何个人信息或设备标识的普通请求；和访问任何网站一样，GitHub 会看到你的 IP 地址，并按其自身的隐私政策处理。</li>
+  </ul>
+
+  <h2>TestFlight 与应用商店</h2>
+  <p>通过 TestFlight 或应用商店安装时，平台方（如 Apple）可能按其自身政策收集崩溃日志和使用数据，并在你同意的情况下把经匿名处理的诊断信息提供给开发者。你在 TestFlight 里主动提交的反馈（截图和文字）会发送给我们，只用于修复问题。</p>
+
+  <h2>本网站</h2>
+  <p>xdremux.app 是静态网站，不使用 Cookie，也没有统计或广告脚本。网站由 Cloudflare 和 GitHub Pages 提供服务，首页会从 Google Fonts 加载字体，并请求 GitHub 的公开接口获取最新版本号；这些服务商会按各自的隐私政策处理访问日志（如 IP 地址）。下载链接指向 GitHub Releases。</p>
+
+  <h2>儿童隐私</h2>
+  <p>XDRemux 不面向儿童收集信息；应用本身也不收集任何人的个人数据。</p>
+
+  <h2>政策变更</h2>
+  <p>如果应用的数据处理方式发生变化，我们会更新本页并修改生效日期。本页的历史版本可以在<a href="https://github.com/BeetMan/xdremux-site/commits/main/privacy/index.html" rel="noopener">网站仓库的提交记录</a>里查看。</p>
+
+  <h2>联系我们</h2>
+  <p>对本政策有疑问，请在 <a href="https://github.com/BeetMan/XDRemux-Flutter/issues" rel="noopener">GitHub Issues</a> 提出。XDRemux 是开源项目，你也可以直接查阅<a href="https://github.com/BeetMan/XDRemux-Flutter" rel="noopener">源代码</a>核实上述内容。</p>
+</section>
+
+<section id="en" lang="en">
+  <h1>Privacy Policy</h1>
+  <p class="meta">Effective 12 November 2026</p>
+  <div class="lede"><p>XDRemux converts photos locally on your device. <strong>We do not collect, upload or sell any personal data.</strong> The app has no accounts, ads, analytics or third-party tracking.</p></div>
+
+  <h2>Scope</h2>
+  <p>This policy covers every edition of XDRemux: the native app for iOS, iPadOS and macOS (including builds distributed through TestFlight), the cross-platform app for Windows, macOS, Android, iOS and Linux, the native HarmonyOS app, and this website, xdremux.app.</p>
+
+  <h2>Photos and files</h2>
+  <ul>
+    <li>Detection, preview and conversion all run on your device. Your photos and videos are never sent to us or to any third-party server.</li>
+    <li>Imported copies, converted files, the queue and your settings are stored in the app's own storage or in a folder you choose. Uninstalling the app, or clearing them inside the app, deletes them.</li>
+    <li>Photo metadata such as capture time, device model and location (EXIF) is read locally only, to display it and to write it into the converted file.</li>
+  </ul>
+
+  <h2>Permissions the app asks for</h2>
+  <ul>
+    <li><strong>Photos</strong>: to pick photos to convert and to save converted photos to your library.</li>
+    <li><strong>Files and folders</strong>: only the files you select, drop in, or hand to the app from the share sheet.</li>
+    <li><strong>Local network</strong>: only for local transfer, to discover devices on the same network and send files directly to them.</li>
+    <li><strong>Notifications</strong> (some editions): to report the progress and result of background conversions.</li>
+  </ul>
+  <p>You can turn any of these off in system settings at any time. The related feature stops working; everything else keeps working.</p>
+
+  <h2>Local network transfer</h2>
+  <p>Transfer uses the LocalSend protocol. Files travel directly between two devices on the same local network and never pass through our servers or any internet relay. So that the other device can see and choose yours, the app announces the device name you set, the device type and a port on the local network. Transfers are encrypted with HTTPS. None of this happens unless you use the transfer feature.</p>
+
+  <h2>Network access</h2>
+  <ul>
+    <li><strong>Native app (iOS / iPadOS / macOS)</strong>: makes no network connections other than local transfer.</li>
+    <li><strong>Other editions</strong>: may contact GitHub's public API to check for a newer version. The request carries no personal information or device identifier. As with any website, GitHub sees your IP address and handles it under its own privacy policy.</li>
+  </ul>
+
+  <h2>TestFlight and app stores</h2>
+  <p>When you install through TestFlight or an app store, the platform operator (such as Apple) may collect crash logs and usage data under its own policies and, with your consent, share anonymised diagnostics with the developer. Feedback you choose to send through TestFlight (screenshots and text) reaches us and is used only to fix problems.</p>
+
+  <h2>This website</h2>
+  <p>xdremux.app is a static site. It sets no cookies and runs no analytics or advertising scripts. It is served by Cloudflare and GitHub Pages; the home page loads fonts from Google Fonts and asks GitHub's public API for the latest version number. Those providers process access logs, such as IP addresses, under their own privacy policies. Download links point to GitHub Releases.</p>
+
+  <h2>Children</h2>
+  <p>XDRemux does not knowingly collect information from children. The app does not collect personal data from anyone.</p>
+
+  <h2>Changes</h2>
+  <p>If the way the app handles data changes, we will update this page and its effective date. Earlier versions are visible in the <a href="https://github.com/BeetMan/xdremux-site/commits/main/privacy/index.html" rel="noopener">site repository's history</a>.</p>
+
+  <h2>Contact</h2>
+  <p>Questions about this policy can be raised on <a href="https://github.com/BeetMan/XDRemux-Flutter/issues" rel="noopener">GitHub Issues</a>. XDRemux is open source, so you can also check the <a href="https://github.com/BeetMan/XDRemux-Flutter" rel="noopener">source code</a> to verify what is described here.</p>
+</section>
+</main>
+
+<footer>
+  <p>© 2026 BeetMan · <a href="/">xdremux.app</a></p>
+  <p>Apple、iPhone、iPad、Mac、TestFlight 等名称归各自所有者。Names such as Apple, iPhone, iPad, Mac and TestFlight belong to their respective owners.</p>
+</footer>
+</body>
+</html>
