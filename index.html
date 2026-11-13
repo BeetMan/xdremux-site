@@ -460,6 +460,7 @@ button{font-family:inherit}
 .peek-shot img{display:block;width:100%;height:auto;aspect-ratio:1600/1226;border-radius:23px;background:#fff}
 .peek-shot figcaption{margin-top:16px;color:var(--fg-2);font-size:.9375rem;text-align:center}
 .peek-shot figcaption strong{color:var(--fg);font-weight:600}
+.peek-cta{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:14px 28px;margin-top:30px}
 .peek-note{margin-top:28px;color:var(--fg-3);font-size:.8125rem;text-align:center}
 @media (max-width:734px){
   .peek-grid{grid-template-columns:minmax(0,1fr);gap:36px}
@@ -918,13 +919,14 @@ button{font-family:inherit}
         <p class="eyebrow">抢先看</p>
         <h2 class="sec-title">原生 Apple 版。<br>预发布已推出。</h2>
         <p class="lead">SwiftUI 打造全新界面，内核依然是那套 Rust 引擎。<br class="br-l">iPhone、iPad 与 Mac 都能用，0.1.1 预发布版现已可下载。<br class="br-l">新增逐张独立转换设置、iOS 一键存入照片，以及批量清除已完成项。</p>
+        <div class="peek-cta"><a class="btn" href="https://testflight.apple.com/join/hPrW1UWn" target="_blank" rel="noopener">加入 iOS 版 TestFlight</a><a class="more" href="#download">下载 macOS 版 ›</a></div>
       </header>
       <ul class="peek-grid">
         <li data-reveal><figure class="peek-shot"><div class="bezel"><img src="assets/native-main.webp" width="1600" height="1226" alt="XDRemux 原生 iOS 版开发截图：左侧转换队列，右侧大幅照片预览与转换选项" loading="lazy"></div><figcaption><strong>队列与照片，一屏尽览。</strong>屏幕够大，就不必来回切换。</figcaption></figure></li>
         <li data-reveal style="--d:.08s"><figure class="peek-shot"><div class="bezel"><img src="assets/native-detail-apple.webp" width="1600" height="1226" alt="XDRemux 原生 iOS 版开发截图：夜空云层照片的 HDR 预览与转换选项" loading="lazy"></div><figcaption><strong>高光，先睹为快。</strong>转换之前就能看到 HDR，一键对比 SDR。</figcaption></figure></li>
         <li data-reveal style="--d:.16s"><figure class="peek-shot"><div class="bezel"><img src="assets/native-queue-apple.webp" width="1600" height="1226" alt="XDRemux 原生 iOS 版开发截图：海景照片旁的 Apple 标准与摄影风格选项" loading="lazy"></div><figcaption><strong>选项，触手可及。</strong>输出模式与摄影风格，就在照片旁边。</figcaption></figure></li>
       </ul>
-      <p class="peek-note">截图来自 iPhone Duo 模拟器上的开发版本，与 0.1.1 预发布版可能略有不同。 <a class="more" href="https://testflight.apple.com/join/hPrW1UWn" target="_blank" rel="noopener">iOS 版加入 TestFlight ›</a> <a class="more" href="#download">下载预发布版 ›</a> <a class="more" href="https://github.com/BeetMan/XDRemux-Flutter/releases/tag/apple-v0.1.1" target="_blank" rel="noopener">查看 0.1.1 更新 ›</a></p>
+      <p class="peek-note">截图来自 iPhone Duo 模拟器上的开发版本，与 0.1.1 预发布版可能略有不同。 <a class="more" href="#download">下载预发布版 ›</a> <a class="more" href="https://github.com/BeetMan/XDRemux-Flutter/releases/tag/apple-v0.1.1" target="_blank" rel="noopener">查看 0.1.1 更新 ›</a></p>
     </div>
   </section>
 
